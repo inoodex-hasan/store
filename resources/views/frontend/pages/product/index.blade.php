@@ -1,25 +1,52 @@
 @extends('frontend.layouts.app')
 @section('content')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
-            border-color: transparent transparent #888 transparent;
-            border-width: 0 !important;
-        }
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-width: 0 !important;
+    }
 
-        .select2-container--default .select2-selection--single .select2-selection__arrow b {
-            border-color: #888 transparent transparent transparent;
-            border-style: solid;
-            border-width: 0 !important;
-            height: 0;
-            left: 50%;
-            margin-left: -4px;
-            margin-top: -2px;
-            position: absolute;
-            top: 50%;
-            width: 0;
-        }
-    </style>
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #productTable {
+        width: 100%;
+        table-layout: fixed;   /* key: respects your % widths strictly */
+        font-size: 0.82rem;
+    }
+
+    #productTable th,
+    #productTable td {
+        vertical-align: middle;
+        padding: 7px 8px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Allow product name to wrap if needed */
+    #productTable td:nth-child(3) {
+        white-space: normal;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    @media (max-width: 1366px) {
+        #productTable { font-size: 0.78rem; }
+        #productTable th, #productTable td { padding: 5px 6px; }
+    }
+
+    @media (max-width: 1280px) {
+        #productTable { font-size: 0.75rem; }
+    }
+
+    .table-responsive::-webkit-scrollbar { height: 6px; }
+    .table-responsive::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+    .table-responsive::-webkit-scrollbar-thumb { background: #aaa; border-radius: 4px; }
+</style>
     <div class="content container-fluid">
         <div class="page-header">
             <div class="content-page-header">
@@ -178,191 +205,79 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="productTable" class="table table-center table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Brand Name (ব্রান্ড নাম)</th>
-                                        <th>Product Name (প্রোডাক্ট নাম)</th>
-                                        <th>Product Unit Price(প্রোডাক্ট ইউনিট প্রাইস)</th>
-                                        <th>Product Image(প্রোডাক্ট ছবি)</th>
-                                        <th>Category Name (ক্যাটাগরি নাম)</th>
-                                        <th> Unit (ইউনিট)</th>
-                                        <th>Status (স্ট্যাটাস)</th>
-                                        <th class="no-sort">Actions (একশন)</th>
-                                    </tr>
-                                </thead>
+                               <thead class="thead-light">
+    <tr>
+        <th style="width: 4%;">#</th>
+        <th style="width: 14%;">Brand <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ব্রান্ড নাম</small></th>
+        <th style="width: 18%;">Product Name <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">প্রোডাক্ট নাম</small></th>
+        <th style="width: 12%;">Unit Price <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট প্রাইস</small></th>
+        <th style="width: 16%;">Category <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ক্যাটাগরি</small></th>
+        <th style="width: 8%;">Unit <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট</small></th>
+        <th style="width: 9%;">Status <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">স্ট্যাটাস</small></th>
+        <th style="width: 10%;" class="no-sort">Actions <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">একশন</small></th>
+    </tr>
+</thead>
                                 <tbody>
-                                    @foreach ($products as $product)
-                                        <tr>
-                                            <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $product->brand->name ?? 'N/A' }}</td>
-
-                                            <td>{{ $product->name }}</td>
-                                            <td>
-                                                {{ $product->latestPurchase->unit_price ?? '—' }}
-                                            </td>
-                                            <td>
-                                                <img class="t-img" src="{{ asset($product->product_image) }}"
-                                                    alt="" height="150" width="150" />
-                                            </td>
-
-                                            <td>{{ $product->category->category_name ?? 'N/A' }}</td>
-
-                                            <td>{{ $product->unit }}</td>
-
-
-                                            <td>
-                                                @if ($product->status == 1)
-                                                    <span class="badge bg-success">Active</span>
-                                                @else
-                                                    <span class="badge bg-danger">Inactive</span>
-                                                @endif
-                                            </td>
-
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="btn-action-icon"
-                                                            data-bs-toggle="dropdown">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <ul>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="javascript:void(0)"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#edit-product-modal{{ $product->id }}">
-                                                                        <i class="far fa-edit me-2"></i>Edit
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a onclick="if (confirm('Are you sure to delete the product?')) { document.getElementById('serviceDelete{{ $product->id }}').submit(); }"
-                                                                        class="dropdown-item" href="javascript:void(0)">
-                                                                        <i class="far fa-trash-alt me-2"></i>Delete
-                                                                    </a>
-                                                                    <form id="serviceDelete{{ $product->id }}"
-                                                                        action="{{ route('products.destroy', $product->id) }}"
-                                                                        method="POST" style="display:none;">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                    </form>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+    @foreach ($products as $product)
+        <tr>
+            <td>{{ $loop->index + 1 }}</td>
+            <td>
+                @if($product->brand)
+                    <a href="javascript:void(0)" class="text-decoration-none fw-semibold"
+                       onclick="showBrandProducts({{ $product->brand_id }}, '{{ $product->brand->name }}')">
+                        {{ Str::limit($product->brand->name, 22) }}
+                    </a>
+                @else
+                    <span class="text-muted">N/A</span>
+                @endif
+            </td>
+            <td title="{{ $product->name }}">{{ Str::limit($product->name, 28) }}</td>
+            <td>{{ $product->latestPurchase->unit_price ?? '—' }}</td>
+            <td title="{{ $product->category->category_name ?? 'N/A' }}">
+                {{ Str::limit($product->category->category_name ?? 'N/A', 16) }}
+            </td>
+            <td>{{ $product->unit }}</td>
+            <td>
+                @if ($product->status == 1)
+                    <span class="badge bg-success">Active</span>
+                @else
+                    <span class="badge bg-danger">Inactive</span>
+                @endif
+            </td>
+            <td>
+                <div class="dropdown dropdown-action">
+                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <ul>
+                            <li>
+                                <a class="dropdown-item" href="javascript:void(0)"
+                                    onclick="openEditProductModal({{ $product->id }}, {{ $product->brand_id }}, '{{ $product->name }}', '{{ $product->unit }}', {{ $product->status }}, {{ $product->category_id ?? 'null' }})">
+                                    <i class="far fa-edit me-2"></i>Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="if (confirm('Are you sure to delete the product?')) { document.getElementById('serviceDelete{{ $product->id }}').submit(); }"
+                                    class="dropdown-item" href="javascript:void(0)">
+                                    <i class="far fa-trash-alt me-2"></i>Delete
+                                </a>
+                                <form id="serviceDelete{{ $product->id }}"
+                                    action="{{ route('products.destroy', $product->id) }}"
+                                    method="POST" style="display:none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
                             </table>
-                            <div class="d-flex justify-content-end mt-4">
-                                {!! $products->links('pagination::bootstrap-5') !!}
-                            </div>
 
-                            <!-- Modals should be outside the table -->
-                            @foreach ($products as $product)
-                                <div id="edit-product-modal{{ $product->id }}" class="modal fade" tabindex="-1"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header cat-head">
-                                                <h5 class="modal-title" id="edit-product-modal{{ $product->id }}">Edit
-                                                    Product</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-
-                                                <form class="px-3" method="POST"
-                                                    action="{{ route('products.update', $product->id) }}"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="mb-3">
-                                                        <label for="name" class="form-label">Brand Name <span
-                                                                class="text-danger">*</span></label>
-                                                        <select class="form-control select2" name="brand_id"
-                                                            id="brand_id" required>
-                                                            <option value="">Select Brand</option>
-                                                            @foreach ($brands as $brand)
-                                                                <option
-                                                                    {{ $brand->id == $product->brand_id ? 'selected' : '' }}
-                                                                    value="{{ $brand->id }}">{{ $brand->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <!-- Product Name -->
-                                                    <div class="mb-3">
-                                                        <label for="name{{ $product->id }}" class="form-label">Product
-                                                            Name <span class="text-danger">*</span></label>
-                                                        <input type="text" name="name"
-                                                            id="name{{ $product->id }}" class="form-control"
-                                                            placeholder="Enter product name"
-                                                            value="{{ old('name', $product->name) }}" required>
-                                                    </div>
-
-
-
-                                                    <div class="col-md-6 col-lg-6">
-                                                        <label for="category_image" class="form-label fw-semibold">Product
-                                                            Image</label>
-                                                        <input type="file" class="form-control" id="product_image"
-                                                            name="product_image" accept="image/*">
-                                                    </div>
-
-
-
-
-                                                    <div class="mb-3">
-                                                        <label for="name" class="form-label"> Category Name <span
-                                                                class="text-danger">*</span></label>
-                                                        <select name="category_id" class="form-control select2" required>
-                                                            <option value="">-- Select Category --</option>
-                                                            @foreach ($categories as $category)
-                                                                <option value="{{ $category->id }}">
-                                                                    {{ $category->category_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div class="mb-3">
-                                                        <label for="category" class="form-label"> Unit <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" name="unit" id="unit"
-                                                            value="{{ old('name', $product->unit) }}"
-                                                            class="form-control" placeholder="Enter Unit name" required>
-                                                    </div>
-
-
-
-                                                    <!-- Status -->
-                                                    <div class="mb-3">
-                                                        <label for="status{{ $product->id }}"
-                                                            class="form-label">Status</label>
-                                                        <select class="form-select mb-3" name="status"
-                                                            id="status{{ $product->id }}" required>
-                                                            <option value="1"
-                                                                {{ old('status', $product->status) == 1 ? 'selected' : '' }}>
-                                                                Active</option>
-                                                            <option value="0"
-                                                                {{ old('status', $product->status) == 0 ? 'selected' : '' }}>
-                                                                Inactive</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <button type="submit" class="btn create-btn">Update</button>
-                                                    </div>
-                                                </form>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
 
                         </div>
                     </div>
@@ -370,6 +285,163 @@
             </div>
         </div>
     </div>
+
+    {{-- Brand Products Modal --}}
+    <div id="brand-products-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header cat-head">
+                    <h5 class="modal-title" id="brand-modal-title">Brand Products</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Unit</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="brand-products-tbody">
+                                {{-- Populated by JavaScript --}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Shared Edit Product Modal --}}
+    <div id="edit-product-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header cat-head">
+                    <h5 class="modal-title">Edit Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm" class="px-3" method="POST" action="" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="mb-3">
+                            <label class="form-label">Brand Name <span class="text-danger">*</span></label>
+                            <select class="form-control select2" name="brand_id" id="edit-brand-id" required>
+                                <option value="">Select Brand</option>
+                                @foreach ($brands as $brand)
+                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" id="edit-product-name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Product Image</label>
+                            <input type="file" class="form-control" name="product_image" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category Name <span class="text-danger">*</span></label>
+                            <select name="category_id" id="edit-category-id" class="form-control select2" required>
+                                <option value="">-- Select Category --</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Unit <span class="text-danger">*</span></label>
+                            <input type="text" name="unit" id="edit-unit" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" name="status" id="edit-status" required>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn create-btn">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @php
+        $productsData = [];
+        foreach($products as $p) {
+            $productsData[] = [
+                'id' => $p->id,
+                'name' => $p->name,
+                'brand_id' => $p->brand_id,
+                'category_name' => $p->category ? $p->category->category_name : 'N/A',
+                'unit' => $p->unit,
+                'status' => $p->status
+            ];
+        }
+    @endphp
+
+    <script>
+        // Products data for brand modal
+        const productsData = @json($productsData);
+
+        function showBrandProducts(brandId, brandName) {
+            const tbody = document.getElementById('brand-products-tbody');
+            tbody.innerHTML = '';
+
+            const brandProducts = productsData.filter(p => p.brand_id === brandId);
+
+            if (brandProducts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No products found for this brand</td></tr>';
+            } else {
+                brandProducts.forEach((product, index) => {
+                    const row = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${product.name}</td>
+                            <td>${product.category_name}</td>
+                            <td>${product.unit}</td>
+                            <td>
+                                <span class="badge ${product.status == 1 ? 'bg-success' : 'bg-danger'}">
+                                    ${product.status == 1 ? 'Active' : 'Inactive'}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            }
+
+            document.getElementById('brand-modal-title').textContent = brandName + ' - Products';
+            const modal = new bootstrap.Modal(document.getElementById('brand-products-modal'));
+            modal.show();
+        }
+
+        function openEditProductModal(productId, brandId, name, unit, status, categoryId) {
+            document.getElementById('editProductForm').action = '/products/' + productId;
+            document.getElementById('edit-brand-id').value = brandId;
+            document.getElementById('edit-product-name').value = name;
+            document.getElementById('edit-unit').value = unit;
+            document.getElementById('edit-status').value = status;
+            document.getElementById('edit-category-id').value = categoryId || '';
+
+            // Refresh select2 if initialized
+            if ($.fn.select2) {
+                $('#edit-brand-id, #edit-category-id').select2();
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('edit-product-modal'));
+            modal.show();
+        }
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endsection

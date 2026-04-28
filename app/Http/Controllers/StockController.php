@@ -57,7 +57,7 @@ class StockController extends Controller
             $query->where('quantity', $request->quantity);
         }
 
-        $stocks = $query->latest()->paginate(10)->withQueryString();
+        $stocks = $query->latest()->get();
 
         $products = Product::all();
         $shops = Shop::all();

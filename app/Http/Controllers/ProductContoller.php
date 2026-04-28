@@ -72,7 +72,7 @@ class ProductContoller extends Controller
             $query->where('status', $request->status);
         }
 
-        $products = $query->paginate(10);
+        $products = $query->get();
 
         $brands = Brand::where('status', '1')->latest()->get();
         $categories = Category::all();

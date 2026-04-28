@@ -252,41 +252,22 @@
 
 
                                                 <td>
-
                                                     <div class="dropdown dropdown-action">
-                                                        <a href="{{ route('stock.edit', $stock->id) }}"
-                                                            class="btn-action-icon" data-bs-toggle="dropdown"><i
-                                                                class="fas fa-ellipsis-v"></i></a>
+                                                        <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </a>
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#edit-inventory-modal{{ $stock->id }}">
+                                                               onclick="openEditModal({{ $stock->id }}, {{ $stock->product_id }}, {{ $stock->quantity }}, {{ $stock->type }}, '{{ $stock->shop?->location ?? ($stock->warehouse?->location ?? '') }}')">
                                                                 <i class="far fa-edit me-2"></i>Edit
                                                             </a>
-
-
-                                                            {{--                                                    <a href="#" class="dropdown-item" --}}
-                                                            {{--                                                       onclick="event.preventDefault(); if (confirm('Are you sure to delete this Stock?')) document.getElementById('deleteForm{{ $stock->id }}').submit();"> --}}
-                                                            {{--                                                        <i class="far fa-trash-alt me-2"></i>Delete --}}
-                                                            {{--                                                    </a> --}}
-
-
-
-                                                            <a href="#" class="dropdown-item"
-                                                                onclick="deleteStock({{ $stock->id }})">
+                                                            <a href="#" class="dropdown-item" onclick="deleteStock({{ $stock->id }})">
                                                                 <i class="far fa-trash-alt me-2"></i>Delete
                                                             </a>
-
-
-                                                            <form id="deleteForm{{ $stock->id }}"
-                                                                action="{{ route('stock.delete', $stock->id) }}"
-                                                                method="POST" style="display:none;">
+                                                            <form id="deleteForm{{ $stock->id }}" action="{{ route('stock.delete', $stock->id) }}" method="POST" style="display:none;">
                                                                 @csrf
                                                                 @method('DELETE')
                                                             </form>
-
-
-
                                                         </div>
                                                     </div>
                                                 </td>
@@ -295,123 +276,12 @@
 
 
 
-                                            <!-- Edit inventory Modal -->
-                                            <!-- Inventory Edit Modal -->
-                                            <div id="edit-inventory-modal{{ $stock->id }}" class="modal fade"
-                                                tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body">
-                                                            <div class="text-center mt-2 mb-4">
-                                                                <div class="auth-logo">
-                                                                    <a href="{{ route('stock.index') }}"
-                                                                        class="logo logo-dark">
-                                                                        <span class="logo-lg">
-                                                                            <img src="{{ asset('assets/img/logo.png') }}"
-                                                                                alt="Logo" height="42">
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-
-
-
-
-                                                            <form method="POST"
-                                                                action="{{ route('stock.update', $stock->id) }}"
-                                                                class="px-3">
-                                                                @csrf
-                                                                {{--                                                      @method('PUT') --}}
-
-
-
-
-
-                                                                <!-- Hidden values to help JavaScript know what's selected -->
-                                                                <input type="hidden" class="current-type"
-                                                                    value="{{ $stock->type }}">
-                                                                <input type="hidden" class="current-location"
-                                                                    value="{{ $stock->shop?->location ?? ($stock->warehouse?->location ?? '') }}">
-
-
-                                                                <!-- Product select -->
-                                                                <div class="mb-3">
-                                                                    <label class="form-label"> Select Product <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <select name="product_id" class="form-select"
-                                                                        required>
-                                                                        <option value="" disabled>-- Select Product
-                                                                            --</option>
-                                                                        @foreach ($products as $product)
-                                                                            <option value="{{ $product->id }}"
-                                                                                {{ $product->id == $stock->product_id ? 'selected' : '' }}>
-                                                                                {{ $product->name }}
-                                                                                {{--                                                                            ({{ $product->model ?? 'N/A' }}) --}}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-
-
-                                                                <!-- Quantity -->
-                                                                <div class="mb-3">
-                                                                    <label class="form-label"> Quantity <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <input type="number" name="quantity"
-                                                                        class="form-control" min="0"
-                                                                        value="{{ $stock->quantity }}" required>
-                                                                </div>
-
-
-                                                                <!-- Type -->
-                                                                <div class="mb-3">
-                                                                    <label class="form-label fw-semibold">Type</label>
-                                                                    <select class="form-control type-select"
-                                                                        name="type">
-                                                                        <option value="">Select Type</option>
-                                                                        <option value="1"
-                                                                            {{ $stock->type == 1 ? 'selected' : '' }}>Shop
-                                                                        </option>
-                                                                        <option value="2"
-                                                                            {{ $stock->type == 2 ? 'selected' : '' }}>
-                                                                            Warehouse</option>
-                                                                    </select>
-                                                                </div>
-
-                                                                <!-- Location -->
-                                                                <div class="mb-3">
-                                                                    <label class="form-label fw-semibold">Location</label>
-                                                                    <select class="form-control location-select"
-                                                                        name="location">
-                                                                        <option value="">Select Location</option>
-                                                                    </select>
-                                                                </div>
-
-
-
-                                                                <div class="mb-3">
-                                                                    <button type="submit"
-                                                                        class="btn create-btn">Update</button>
-                                                                </div>
-
-
-                                                            </form>
-
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         @endforeach
 
                                     </tbody>
 
                                 </table>
 
-                                <div class="d-flex justify-content-end mt-4">
-                                    {!! $stocks->links('pagination::bootstrap-5') !!}
-                                </div>
 
                             </div>
                         </div>
@@ -422,7 +292,69 @@
         </div>
     </div>
 
+    {{-- Shared Edit Modal (Single Modal for All Rows) --}}
+    <div id="edit-inventory-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center mt-2 mb-4">
+                        <div class="auth-logo">
+                            <a href="{{ route('stock.index') }}" class="logo logo-dark">
+                                <span class="logo-lg">
+                                    <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" height="42">
+                                </span>
+                            </a>
+                        </div>
+                    </div>
 
+                    <form id="editStockForm" method="POST" action="" class="px-3">
+                        @csrf
+
+                        <input type="hidden" id="edit-stock-id">
+
+                        {{-- Product select --}}
+                        <div class="mb-3">
+                            <label class="form-label"> Select Product <span class="text-danger">*</span></label>
+                            <select name="product_id" id="edit-product-id" class="form-select" required>
+                                <option value="" disabled>-- Select Product --</option>
+                                @foreach ($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Quantity --}}
+                        <div class="mb-3">
+                            <label class="form-label"> Quantity <span class="text-danger">*</span></label>
+                            <input type="number" name="quantity" id="edit-quantity" class="form-control" min="0" required>
+                        </div>
+
+                        {{-- Type --}}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Type</label>
+                            <select class="form-control" id="edit-type" name="type" onchange="updateEditLocations()">
+                                <option value="">Select Type</option>
+                                <option value="1">Shop</option>
+                                <option value="2">Warehouse</option>
+                            </select>
+                        </div>
+
+                        {{-- Location --}}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Location</label>
+                            <select class="form-control" id="edit-location" name="location">
+                                <option value="">Select Location</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn create-btn">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     {{-- only for store data  select shop or warehouse show auto location --}}
@@ -497,33 +429,42 @@
             });
         }
 
-        //  2. Handle All Edit Modals
-        document.querySelectorAll('.modal').forEach(modal => {
-            const typeSelect = modal.querySelector('.type-select');
-            const locationSelect = modal.querySelector('.location-select');
-            const currentType = modal.querySelector('.current-type')?.value;
-            const currentLocation = modal.querySelector('.current-location')?.value;
+        // 2. Shared Edit Modal Functions
+        let currentEditLocation = '';
 
-            if (typeSelect && locationSelect) {
-                typeSelect.addEventListener('change', function() {
-                    if (this.value === '1') {
-                        populateLocations(locationSelect, shopLocations);
-                    } else if (this.value === '2') {
-                        populateLocations(locationSelect, warehouseLocations);
-                    } else {
-                        locationSelect.innerHTML = '<option value="">Select Location</option>';
-                    }
-                });
+        function openEditModal(stockId, productId, quantity, type, location) {
+            // Set form action URL
+            document.getElementById('editStockForm').action = '/stock/update/' + stockId;
+
+            // Populate fields
+            document.getElementById('edit-stock-id').value = stockId;
+            document.getElementById('edit-product-id').value = productId;
+            document.getElementById('edit-quantity').value = quantity;
+            document.getElementById('edit-type').value = type;
+
+            currentEditLocation = location;
+
+            // Populate locations based on type
+            updateEditLocations();
+
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('edit-inventory-modal'));
+            modal.show();
+        }
+
+        function updateEditLocations() {
+            const typeSelect = document.getElementById('edit-type');
+            const locationSelect = document.getElementById('edit-location');
+            const selectedType = typeSelect.value;
+
+            if (selectedType === '1') {
+                populateLocations(locationSelect, shopLocations, currentEditLocation);
+            } else if (selectedType === '2') {
+                populateLocations(locationSelect, warehouseLocations, currentEditLocation);
+            } else {
+                locationSelect.innerHTML = '<option value="">Select Location</option>';
             }
-
-            modal.addEventListener('show.bs.modal', () => {
-                if (currentType === '1') {
-                    populateLocations(locationSelect, shopLocations, currentLocation);
-                } else if (currentType === '2') {
-                    populateLocations(locationSelect, warehouseLocations, currentLocation);
-                }
-            });
-        });
+        }
     </script>
 
 
