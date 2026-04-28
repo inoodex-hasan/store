@@ -167,17 +167,20 @@
                         <select name="type" class="form-select">
                             <option value="">All Types</option>
                             @foreach ($types as $type)
+                                @php
+                                    $typeLabel = $type == 1 ? 'Shop' : ($type == 2 ? 'Warehouse' : $type);
+                                @endphp
                                 <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
-                                    {{ $type }}
+                                    {{ $typeLabel }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                         <input type="number" name="quantity" value="{{ request('quantity') }}" class="form-control"
                             placeholder="Quantity">
-                    </div>
+                    </div> -->
 
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary w-100">Filter</button>

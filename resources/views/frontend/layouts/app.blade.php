@@ -59,6 +59,9 @@
     <!-- Custom JS -->
     <script src="{{asset('assets')}}/js/script.js" type="19fcc0aa7d222f8686a0e100-text/javascript"></script>
 
+    <!-- Page Specific Scripts -->
+    @stack('scripts')
+
     <script src="{{ asset('assets') }}/js/rocket-loader.min.js" data-cf-settings="19fcc0aa7d222f8686a0e100-|49" defer>
     </script>
 </body>

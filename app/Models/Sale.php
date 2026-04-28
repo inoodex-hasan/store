@@ -46,7 +46,7 @@ class Sale extends Model
 
     public function items()
     {
-        return $this->hasMany(SalesItem::class);
+        return $this->hasMany(SalesItem::class, 'order_id');
     }
 
 

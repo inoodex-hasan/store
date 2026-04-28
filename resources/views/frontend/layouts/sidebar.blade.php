@@ -32,7 +32,7 @@
                     <li class="">
                         <a href="{{ route('category.index') }}"
                             class="{{ Route::currentRouteName() == 'category.index' ? 'active' : '' }}">
-                            <i class="fe fe-package"></i>
+                            <i class="fe fe-folder"></i>
                             <span>
                                 <span class="lang-en">Category</span>
                                 <span class="lang-bn" style="display:none">ক্যাটাগরি</span>
@@ -42,7 +42,7 @@
                     <li class="">
                         <a href="{{ route('brands.index') }}"
                             class="{{ Route::currentRouteName() == 'brand.index' ? 'active' : '' }}">
-                            <i class="fe fe-package"></i>
+                            <i class="fe fe-tag"></i>
                             <span>
                                 <span class="lang-en">Brand List</span>
                                 <span class="lang-bn" style="display:none">ব্র্যান্ড লিস্ট</span>
@@ -52,7 +52,7 @@
                     <li class="">
                         <a href="{{ route('products.index') }}"
                             class="{{ Route::currentRouteName() == 'products.index' ? 'active' : '' }}">
-                            <i class="fe fe-package"></i>
+                            <i class="fe fe-box"></i>
                             <span>
                                 <span class="lang-en">Product List</span>
                                 <span class="lang-bn" style="display:none">প্রোডাক্ট লিস্ট</span>
@@ -89,6 +89,16 @@
                             </span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="{{ route('returns.index') }}"
+                            class="{{ Route::currentRouteName() == 'returns.index' ? 'active' : '' }}">
+                            <i class="fe fe-rotate-ccw"></i>
+                            <span>
+                                <span class="lang-en">Product Returns</span>
+                                <span class="lang-bn" style="display:none">প্রোডাক্ট রিটার্ন</span>
+                            </span>
+                        </a>
+                    </li>
                 @endcan
 
                 <!-- Customer Management -->
@@ -102,7 +112,7 @@
                     <li class="">
                         <a href="{{ route('customers.create') }}"
                             class="{{ Route::currentRouteName() == 'customers.create' ? 'active' : '' }}">
-                            <i class="fe fe-plus-circle"></i>
+                            <i class="fe fe-user-plus"></i>
                             <span>
                                 <span class="lang-en">Add Customer</span>
                                 <span class="lang-bn" style="display:none">কাস্টমার যোগ</span>
@@ -112,7 +122,7 @@
                     <li class="">
                         <a href="{{ route('customers.index') }}"
                             class="{{ Route::currentRouteName() == 'customers.index' ? 'active' : '' }}">
-                            <i class="fe fe-list"></i>
+                            <i class="fe fe-users"></i>
                             <span>
                                 <span class="lang-en">Customer List</span>
                                 <span class="lang-bn" style="display:none">কাস্টমার লিস্ট</span>
@@ -132,7 +142,7 @@
                     <li class="">
                         <a href="{{ route('vendors.create') }}"
                             class="{{ Route::currentRouteName() == 'vendors.create' ? 'active' : '' }}">
-                            <i class="fe fe-plus-circle"></i>
+                            <i class="fe fe-truck"></i>
                             <span>
                                 <span class="lang-en">Add Vendor</span>
                                 <span class="lang-bn" style="display:none">ভেন্ডর যোগ</span>
@@ -142,7 +152,7 @@
                     <li class="">
                         <a href="{{ route('vendors.index') }}"
                             class="{{ Route::currentRouteName() == 'vendors.index' ? 'active' : '' }}">
-                            <i class="fe fe-list"></i>
+                            <i class="fe fe-truck"></i>
                             <span>
                                 <span class="lang-en">Vendor List</span>
                                 <span class="lang-bn" style="display:none">ভেন্ডর লিস্ট</span>
@@ -162,7 +172,7 @@
                     <li class="">
                         <a href="{{ route('purchase.index') }}"
                             class="{{ Route::currentRouteName() == 'purchase.index' ? 'active' : '' }}">
-                            <i class="fe fe-package"></i>
+                            <i class="fe fe-shopping-cart"></i>
                             <span>
                                 <span class="lang-en">Purchase List</span>
                                 <span class="lang-bn" style="display:none">ক্রয় লিস্ট</span>
@@ -182,7 +192,7 @@
                     <li class="">
                         <a href="{{ route('stock.index') }}"
                             class="{{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}">
-                            <i class="fe fe-package"></i>
+                            <i class="fe fe-layers"></i>
                             <span>
                                 <span class="lang-en">Stock List</span>
                                 <span class="lang-bn" style="display:none">স্টক লিস্ট</span>
@@ -202,7 +212,7 @@
                     <li class="">
                         <a href="{{ route('transfer_stock.index') }}"
                             class="{{ Route::currentRouteName() == 'transfer_stock.index' ? 'active' : '' }}">
-                            <i class="fe fe-list"></i>
+                            <i class="fe fe-shuffle"></i>
                             <span>
                                 <span class="lang-en">Transfer Stock</span>
                                 <span class="lang-bn" style="display:none">স্টক ট্রান্সফার</span>
@@ -222,7 +232,7 @@
                     <li>
                         <a href="{{ route('expense-categories.index') }}"
                             class="{{ Route::currentRouteName() == 'expense-categories.index' ? 'active' : '' }}">
-                            <i class="fe fe-plus-circle"></i>
+                            <i class="fe fe-folder-plus"></i>
                             <span>
                                 <span class="lang-en">Expense Category</span>
                                 <span class="lang-bn" style="display:none">খরচ ক্যাটাগরি</span>
@@ -232,7 +242,7 @@
                     <li>
                         <a href="{{ route('dailyExpenses.index') }}"
                             class="{{ Route::currentRouteName() == 'dailyExpenses.index' ? 'active' : '' }}">
-                            <i class="fe fe-list"></i>
+                            <i class="fe fe-dollar-sign"></i>
                             <span>
                                 <span class="lang-en">Expense List</span>
                                 <span class="lang-bn" style="display:none">খরচ লিস্ট</span>
@@ -252,7 +262,7 @@
                     <li class="">
                         <a href="{{ route('purchase.report') }}"
                             class="{{ Route::currentRouteName() == 'purchase.report' ? 'active' : '' }}">
-                            <i class="fe fe-package"></i>
+                            <i class="fe fe-bar-chart-2"></i>
                             <span>
                                 <span class="lang-en">Purchase Report</span>
                                 <span class="lang-bn" style="display:none">ক্রয় রিপোর্ট</span>
@@ -262,7 +272,7 @@
                     <li class="">
                         <a href="{{ route('sales.report') }}"
                             class="{{ Route::currentRouteName() == 'sales.report' ? 'active' : '' }}">
-                            <i class="fe fe-package"></i>
+                            <i class="fe fe-bar-chart"></i>
                             <span>
                                 <span class="lang-en">Sales Report</span>
                                 <span class="lang-bn" style="display:none">বিক্রয় রিপোর্ট</span>
@@ -282,7 +292,7 @@
                     <li>
                         <a href="{{ route('payments.create') }}"
                             class="{{ Route::currentRouteName() == 'payments.create' ? 'active' : '' }}">
-                            <i class="fe fe-plus-circle"></i>
+                            <i class="fe fe-credit-card"></i>
                             <span>
                                 <span class="lang-en">Add Payment</span>
                                 <span class="lang-bn" style="display:none">পেমেন্ট যোগ</span>
@@ -292,7 +302,7 @@
                     <li>
                         <a href="{{ route('payments.index') }}"
                             class="{{ Route::currentRouteName() == 'payments.index' ? 'active' : '' }}">
-                            <i class="fe fe-list"></i>
+                            <i class="fe fe-dollar-sign"></i>
                             <span>
                                 <span class="lang-en">Payment List</span>
                                 <span class="lang-bn" style="display:none">পেমেন্ট লিস্ট</span>
@@ -302,7 +312,7 @@
                     <li>
                         <a href="{{ route('account-receivable.index') }}"
                             class="{{ Route::currentRouteName() == 'account-receivable.index' ? 'active' : '' }}">
-                            <i class="fe fe-list"></i>
+                            <i class="fe fe-alert-circle"></i>
                             <span>
                                 <span class="lang-en">Due Payment List</span>
                                 <span class="lang-bn" style="display:none">বকেয়া পেমেন্ট লিস্ট</span>
@@ -334,9 +344,9 @@
                     <li>
                         <a href="{{ route('Shop-warehouse.index') }}"
                             class="{{ Route::currentRouteName() == 'Shop-warehouse.index' ? 'active' : '' }}">
-                            <i class="fe fe-shopping-cart"></i>
+                            <i class="fe fe-home"></i>
                             <span>
-                                <span class="lang-en">Shop And Warehouse</span>
+                                <span class="lang-en">Shop & Warehouse</span>
                                 <span class="lang-bn" style="display:none">শপ ও ওয়্যারহাউজ</span>
                             </span>
                         </a>
@@ -345,7 +355,7 @@
                     <li>
                         <a href="{{ route('user-manage.index') }}"
                             class="{{ Route::currentRouteName() == 'user-manage.index' ? 'active' : '' }}">
-                            <i class="fe fe-user"></i>
+                            <i class="fe fe-users"></i>
                             <span>
                                 <span class="lang-en">User Manage</span>
                                 <span class="lang-bn" style="display:none">ইউজার ম্যানেজমেন্ট</span>
@@ -376,7 +386,7 @@
                     <li>
                         <a href="{{ route('users.index') }}"
                             class="{{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}">
-                            <i class="fe fe-user"></i>
+                            <i class="fe fe-users"></i>
                             <span>
                                 <span class="lang-en">Users</span>
                                 <span class="lang-bn" style="display:none">ইউজারস</span>
