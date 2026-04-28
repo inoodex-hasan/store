@@ -56,6 +56,9 @@
     <script src="{{asset('assets')}}/js/theme-settings.js" type="19fcc0aa7d222f8686a0e100-text/javascript"></script>
     <script src="{{asset('assets')}}/js/greedynav.js" type="19fcc0aa7d222f8686a0e100-text/javascript"></script>
 
+    <!-- Select2 JS -->
+    <script src="{{asset('assets')}}/plugins/select2/js/select2.min.js" type="19fcc0aa7d222f8686a0e100-text/javascript"></script>
+
     <!-- Custom JS -->
     <script src="{{asset('assets')}}/js/script.js" type="19fcc0aa7d222f8686a0e100-text/javascript"></script>
 

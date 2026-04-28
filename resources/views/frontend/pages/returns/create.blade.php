@@ -290,6 +290,15 @@
             }
         }
 
+        // Initialize Select2 on sale dropdown
+        if (typeof jQuery !== 'undefined' && jQuery.fn.select2) {
+            jQuery('#saleSelect').select2({
+                placeholder: '-- Select Sale --',
+                allowClear: true,
+                width: '100%'
+            });
+        }
+
         // Wait for page to fully load including Select2
         if (document.readyState === 'complete') {
             setTimeout(attachSaleListener, 500);

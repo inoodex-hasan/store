@@ -1,8 +1,49 @@
 @extends('frontend.layouts.app')
 @section('content')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    select, input {
+        border-color: #000 !important;
+    }
 
-    <style>
+    label {
+        color: #000 !important;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #000 !important;
+        border-radius: 6px;
+        height: 40px !important;
+        position: relative !important;
+        /* SVG arrow as background */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #212529;
+        line-height: 40px !important;
+        padding-left: 12px !important;
+        padding-right: 30px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #6c757d;
+    }
+
+    /* Hide the default broken arrow */
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        display: none !important;
+    }
+
+</style>
+    <!-- <style>
         .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
             border-color: transparent transparent #888 transparent;
             border-width: 0 !important;
@@ -34,9 +75,8 @@
             background-color: #fff;
             border: 1px solid #aaa;
             border-radius: 4px;
-            width: 55% !important;
         }
-    </style>
+    </style> -->
     @csrf
     <div class="content container-fluid pt-0">
 
@@ -156,7 +196,7 @@
 
                                 <div class="col-md-4 mt-3">
                                     <label>Product (প্রোডাক্ট)</label>
-                                    <select id="product" class="form-control" name="product" onchange="setStock()">
+                                    <select id="product" class="form-control select2" name="product" onchange="setStock()">
                                         <option value="">Select Product</option>
                                         @foreach ($products as $product)
                                             <option value="{{ $product->id }}"
@@ -996,6 +1036,16 @@ function filterProduct(ele){
     {{-- End stock --}}
 
 
-
+    {{-- Select2 Initialization --}}
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 on product dropdown
+            $('#product').select2({
+                placeholder: 'Select Product',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
 
 @endsection

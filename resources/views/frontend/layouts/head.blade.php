@@ -46,6 +46,9 @@
 		<!-- Datatables CSS -->
 		<link rel="stylesheet" href="{{asset('assets')}}/plugins/datatables/datatables.min.css">
 		
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="{{asset('assets')}}/plugins/select2/css/select2.min.css">
+
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="{{asset('assets')}}/css/style.css">
 		

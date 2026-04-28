@@ -110,10 +110,13 @@ class ProductReturn extends Model
         $sale = $this->sale;
         if (!$sale) return;
 
+        $type = $sale->type ?? 1; // default to shop (1)
+        $location = $sale->location ?? 1; // default to first shop/warehouse
+
         // Find or create stock entry
         $stock = Stock::where('product_id', $item->product_id)
-            ->where('type', $sale->type ?? 1) // default to shop
-            ->where('location', $sale->location)
+            ->where('type', $type)
+            ->where('location', $location)
             ->first();
 
         if ($stock) {
@@ -121,8 +124,8 @@ class ProductReturn extends Model
         } else {
             Stock::create([
                 'product_id' => $item->product_id,
-                'type' => $sale->type ?? 1,
-                'location' => $sale->location,
+                'type' => $type,
+                'location' => $location,
                 'quantity' => $item->quantity
             ]);
         }

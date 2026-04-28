@@ -142,7 +142,7 @@
                                                             @csrf
                                                             @method('PATCH')
                                                             <button type="submit" class="dropdown-item text-primary">
-                                                                <i class="fas fa-box me-2"></i>Complete & Update Stock
+                                                                <i class="fas fa-box me-2"></i>Complete & Update
                                                             </button>
                                                         </form>
                                                     </li>

@@ -1,5 +1,6 @@
 @extends('frontend.layouts.app')
 @section('content')
+
     <div class="content container-fluid">
         <div class="page-header">
             <!-- <div class="content-page-header mt-5">
@@ -520,21 +521,6 @@ $(document).ready(function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     {{-- Start***** NaYeem***** Script for add with calculates sub price,total, and auto-fill payment --}}
 
     <script>
@@ -677,6 +663,26 @@ $(document).ready(function() {
         $(document).ready(function() {
             $('.js-example-basic-single').select2({
                 tags: true
+            });
+
+            // Initialize Select2 on product dropdown in add purchase modal
+            $('#product_id').select2({
+                placeholder: 'Select Product',
+                allowClear: true,
+                width: '100%',
+                dropdownParent: $('#add-purchase-modal')
+            });
+
+            // Initialize Select2 on edit purchase product dropdowns
+            $('select[id^="edit-product_id-"]').each(function() {
+                var $select = $(this);
+                var purchaseId = $select.attr('id').split('-')[2];
+                $select.select2({
+                    placeholder: 'Select Product',
+                    allowClear: true,
+                    width: '100%',
+                    dropdownParent: $('#edit-purchase-modal-' + purchaseId)
+                });
             });
 
 

@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 @section('content')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{asset('assets')}}/plugins/select2/css/select2.min.css" rel="stylesheet" />
 <style>
     .select2-container--default .select2-selection--single .select2-selection__arrow b {
         border-width: 0 !important;
@@ -244,8 +244,8 @@
                     <span class="badge bg-danger">Inactive</span>
                 @endif
             </td>
-            <td>
-                <div class="dropdown dropdown-action">
+            <td class="text-center align-middle">
+                <div class="dropdown dropdown-action d-inline-block">
                     <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
                         <i class="fas fa-ellipsis-v"></i>
                     </a>
@@ -442,6 +442,16 @@
         }
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{asset('assets')}}/plugins/select2/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 on brand dropdown in add product modal
+            $('#brand_id').select2({
+                placeholder: 'Select Brand',
+                allowClear: true,
+                width: '100%',
+                dropdownParent: $('#add-payment-modal')
+            });
+        });
+    </script>
 @endsection
