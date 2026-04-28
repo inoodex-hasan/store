@@ -77,7 +77,7 @@
 
 
                         <div class="form-check form-switch form-switch-right form-switch-md">
-                            <a href="{{ route('category.index') }}" class="btn create-btn-outline"> Category List </a>
+                            <a href="{{ route('category.index') }}" class="btn create-btn-outline"> Back </a>
                         </div>
                     </div>
                 </div>

@@ -102,16 +102,24 @@
 
 
                                             <td>
-
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <a href="{{ route('category.edit', $category->id) }}" class="table-btn">
-                                                        <i class="fe fe-edit text-white"></i>
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                                                        <i class="fas fa-ellipsis-v"></i>
                                                     </a>
-
-                                                    <button type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#myModal{{ $category->id }}" class="table-btn">
-                                                        <i class="fe fe-trash-2 text-white"></i>
-                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('category.edit', $category->id) }}">
+                                                                    <i class="far fa-edit me-2"></i>Edit
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModal{{ $category->id }}">
+                                                                    <i class="far fa-trash-alt me-2"></i>Delete
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </td>
 
