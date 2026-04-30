@@ -106,18 +106,27 @@ class ProductReturn extends Model
     // Add returned item back to stock
     private function addToStock($item)
     {
-        // Get the sale to find the shop/warehouse
         $sale = $this->sale;
         if (!$sale) return;
 
         $type = $sale->type ?? 1; // default to shop (1)
-        $location = $sale->location ?? 1; // default to first shop/warehouse
+        $location = $sale->location ?? null;
 
-        // Find or create stock entry
-        $stock = Stock::where('product_id', $item->product_id)
-            ->where('type', $type)
-            ->where('location', $location)
-            ->first();
+        $stockQuery = Stock::where('product_id', $item->product_id)
+            ->where('type', $type);
+
+        if ($location) {
+            $stockQuery->where('location', $location);
+        }
+
+        $stock = $stockQuery->orderBy('id')->first();
+
+        if (!$stock && $location) {
+            $stock = Stock::where('product_id', $item->product_id)
+                ->where('type', $type)
+                ->orderBy('id')
+                ->first();
+        }
 
         if ($stock) {
             $stock->increment('quantity', $item->quantity);
@@ -125,7 +134,7 @@ class ProductReturn extends Model
             Stock::create([
                 'product_id' => $item->product_id,
                 'type' => $type,
-                'location' => $location,
+                'location' => $location ?? 1,
                 'quantity' => $item->quantity
             ]);
         }
