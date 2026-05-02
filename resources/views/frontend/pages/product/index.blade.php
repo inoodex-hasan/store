@@ -35,10 +35,16 @@
 
         #productTable th:nth-child(1),
         #productTable td:nth-child(1) {
-            text-align: center;
+            text-align: fight !important;
             /* # column centered */
             padding: 10px 20px;
-            width: 50px;
+            width: 300px;
+            min-width: 200px;
+        }
+
+        #productTable thead tr th:first-child,
+        #productTable tbody tr td:first-child {
+            text-align: center !important;
         }
 
         /* Allow product name to wrap if needed */
@@ -239,7 +245,7 @@
                             <table id="productTable" class="table table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th style="width: 3%;">#</th>
+                                        <th style="width: 10%;">#</th>
                                         <th>Brand Name
                                             <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ব্রান্ড
                                                 নাম</small>
