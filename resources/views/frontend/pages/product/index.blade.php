@@ -223,18 +223,20 @@
 
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="productTable" class="table table-center table-hover">
+                            <table id="productTable" class="table table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th style="width: 4%;">#</th>
-                                        <th style="width: 14%;">Brand <small class="d-block text-muted fw-normal"
-                                                style="font-size:0.7rem;">ব্রান্ড নাম</small></th>
+                                        <th style="width: 3%;">#</th>
+<th style="width: 5%;">Brand Name
+    <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ব্রান্ড নাম</small>
+</th>
                                         {{-- <th style="width: 18%;">Product Name <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">প্রোডাক্ট নাম</small></th>
         <th style="width: 12%;">Unit Price <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট প্রাইস</small></th>
         <th style="width: 16%;">Category <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ক্যাটাগরি</small></th>
         <th style="width: 8%;">Unit <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট</small></th> --}}
-                                        <th style="width: 9%;">Status <small class="d-block text-muted fw-normal"
-                                                style="font-size:0.7rem;">স্ট্যাটাস</small></th>
+                                       <th style="width: 10%;">Status
+    <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">স্ট্যাটাস</small>
+</th>
                                         {{-- <th style="width: 10%;" class="no-sort">Actions <small
                                                 class="d-block text-muted fw-normal"
                                                 style="font-size:0.7rem;">একশন</small></th> --}}
@@ -318,6 +320,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="mb-2 w-100" style="text-align: left !important;">
+                        <span class="fw-semibold">Brand:</span>
+                        <span id="brand-selected-name" class="text-primary d-inline-block"></span>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="thead-light">
@@ -473,6 +479,7 @@
             }
 
             document.getElementById('brand-modal-title').textContent = brandName + ' - Products';
+            document.getElementById('brand-selected-name').textContent = brandName;
             const modal = new bootstrap.Modal(document.getElementById('brand-products-modal'));
             modal.show();
         }
