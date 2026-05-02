@@ -1,52 +1,71 @@
 @extends('frontend.layouts.app')
 @section('content')
-    <link href="{{asset('assets')}}/plugins/select2/css/select2.min.css" rel="stylesheet" />
-<style>
-    .select2-container--default .select2-selection--single .select2-selection__arrow b {
-        border-width: 0 !important;
-    }
+    <link href="{{ asset('assets') }}/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-width: 0 !important;
+        }
 
-    .table-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
-    #productTable {
-        width: 100%;
-        table-layout: fixed;   /* key: respects your % widths strictly */
-        font-size: 0.82rem;
-    }
+        #productTable {
+            width: 100%;
+            table-layout: fixed;
+            /* key: respects your % widths strictly */
+            font-size: 0.82rem;
+        }
 
-    #productTable th,
-    #productTable td {
-        vertical-align: middle;
-        padding: 7px 8px;
-        text-align: center;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+        #productTable th,
+        #productTable td {
+            vertical-align: middle;
+            padding: 7px 8px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-    /* Allow product name to wrap if needed */
-    #productTable td:nth-child(3) {
-        white-space: normal;
-        word-break: break-word;
-        text-align: center;
-    }
+        /* Allow product name to wrap if needed */
+        #productTable td:nth-child(3) {
+            white-space: normal;
+            word-break: break-word;
+            text-align: center;
+        }
 
-    @media (max-width: 1366px) {
-        #productTable { font-size: 0.78rem; }
-        #productTable th, #productTable td { padding: 5px 6px; }
-    }
+        @media (max-width: 1366px) {
+            #productTable {
+                font-size: 0.78rem;
+            }
 
-    @media (max-width: 1280px) {
-        #productTable { font-size: 0.75rem; }
-    }
+            #productTable th,
+            #productTable td {
+                padding: 5px 6px;
+            }
+        }
 
-    .table-responsive::-webkit-scrollbar { height: 6px; }
-    .table-responsive::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-    .table-responsive::-webkit-scrollbar-thumb { background: #aaa; border-radius: 4px; }
-</style>
+        @media (max-width: 1280px) {
+            #productTable {
+                font-size: 0.75rem;
+            }
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #aaa;
+            border-radius: 4px;
+        }
+    </style>
     <div class="content container-fluid">
         <div class="page-header">
             <div class="content-page-header">
@@ -205,77 +224,81 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="productTable" class="table table-center table-hover">
-                               <thead class="thead-light">
-    <tr>
-        <th style="width: 4%;">#</th>
-        <th style="width: 14%;">Brand <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ব্রান্ড নাম</small></th>
-        <th style="width: 18%;">Product Name <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">প্রোডাক্ট নাম</small></th>
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th style="width: 4%;">#</th>
+                                        <th style="width: 14%;">Brand <small class="d-block text-muted fw-normal"
+                                                style="font-size:0.7rem;">ব্রান্ড নাম</small></th>
+                                        {{-- <th style="width: 18%;">Product Name <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">প্রোডাক্ট নাম</small></th>
         <th style="width: 12%;">Unit Price <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট প্রাইস</small></th>
         <th style="width: 16%;">Category <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ক্যাটাগরি</small></th>
-        <th style="width: 8%;">Unit <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট</small></th>
-        <th style="width: 9%;">Status <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">স্ট্যাটাস</small></th>
-        <th style="width: 10%;" class="no-sort">Actions <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">একশন</small></th>
-    </tr>
-</thead>
+        <th style="width: 8%;">Unit <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট</small></th> --}}
+                                        <th style="width: 9%;">Status <small class="d-block text-muted fw-normal"
+                                                style="font-size:0.7rem;">স্ট্যাটাস</small></th>
+                                        {{-- <th style="width: 10%;" class="no-sort">Actions <small
+                                                class="d-block text-muted fw-normal"
+                                                style="font-size:0.7rem;">একশন</small></th> --}}
+                                    </tr>
+                                </thead>
                                 <tbody>
-    @foreach ($products as $product)
-        <tr>
-            <td>{{ $loop->index + 1 }}</td>
-            <td>
-                @if($product->brand)
-                    <a href="javascript:void(0)" class="text-decoration-none fw-semibold"
-                       onclick="showBrandProducts({{ $product->brand_id }}, '{{ $product->brand->name }}')">
-                        {{ Str::limit($product->brand->name, 22) }}
-                    </a>
-                @else
-                    <span class="text-muted">N/A</span>
-                @endif
-            </td>
-            <td title="{{ $product->name }}">{{ Str::limit($product->name, 28) }}</td>
+                                    @foreach ($products as $product)
+                                        <tr>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>
+                                                @if ($product->brand)
+                                                    <a href="javascript:void(0)" class="text-decoration-none fw-semibold"
+                                                        onclick="showBrandProducts({{ $product->brand_id }}, '{{ $product->brand->name }}')">
+                                                        {{ $product->brand->name }}
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">N/A</span>
+                                                @endif
+                                            </td>
+                                            {{-- <td title="{{ $product->name }}">{{ Str::limit($product->name, 28) }}</td>
             <td>{{ $product->latestPurchase->unit_price ?? '—' }}</td>
             <td title="{{ $product->category->category_name ?? 'N/A' }}">
                 {{ Str::limit($product->category->category_name ?? 'N/A', 16) }}
             </td>
-            <td>{{ $product->unit }}</td>
-            <td>
-                @if ($product->status == 1)
-                    <span class="badge bg-success">Active</span>
-                @else
-                    <span class="badge bg-danger">Inactive</span>
-                @endif
-            </td>
-            <td class="text-center align-middle">
-                <div class="dropdown dropdown-action d-inline-block">
-                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <ul>
-                            <li>
-                                <a class="dropdown-item" href="javascript:void(0)"
-                                    onclick="openEditProductModal({{ $product->id }}, {{ $product->brand_id }}, '{{ $product->name }}', '{{ $product->unit }}', {{ $product->status }}, {{ $product->category_id ?? 'null' }})">
-                                    <i class="far fa-edit me-2"></i>Edit
-                                </a>
-                            </li>
-                            <li>
-                                <a onclick="if (confirm('Are you sure to delete the product?')) { document.getElementById('serviceDelete{{ $product->id }}').submit(); }"
-                                    class="dropdown-item" href="javascript:void(0)">
-                                    <i class="far fa-trash-alt me-2"></i>Delete
-                                </a>
-                                <form id="serviceDelete{{ $product->id }}"
-                                    action="{{ route('products.destroy', $product->id) }}"
-                                    method="POST" style="display:none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    @endforeach
-</tbody>
+            <td>{{ $product->unit }}</td> --}}
+                                            <td>
+                                                @if ($product->status == 1)
+                                                    <span class="badge bg-success">Active</span>
+                                                @else
+                                                    <span class="badge bg-danger">Inactive</span>
+                                                @endif
+                                            </td>
+                                            {{-- <td class="text-center align-middle">
+                                                <div class="dropdown dropdown-action d-inline-block">
+                                                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <ul>
+                                                            <li>
+                                                                <a class="dropdown-item" href="javascript:void(0)"
+                                                                    onclick="openEditProductModal({{ $product->id }}, {{ $product->brand_id }}, '{{ $product->name }}', '{{ $product->unit }}', {{ $product->status }}, {{ $product->category_id ?? 'null' }})">
+                                                                    <i class="far fa-edit me-2"></i>Edit
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a onclick="if (confirm('Are you sure to delete the product?')) { document.getElementById('serviceDelete{{ $product->id }}').submit(); }"
+                                                                    class="dropdown-item" href="javascript:void(0)">
+                                                                    <i class="far fa-trash-alt me-2"></i>Delete
+                                                                </a>
+                                                                <form id="serviceDelete{{ $product->id }}"
+                                                                    action="{{ route('products.destroy', $product->id) }}"
+                                                                    method="POST" style="display:none;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td> --}}
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
 
 
@@ -301,9 +324,11 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Product Name</th>
+                                    <th>Unit Price</th>
                                     <th>Category</th>
                                     <th>Unit</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="brand-products-tbody">
@@ -325,7 +350,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editProductForm" class="px-3" method="POST" action="" enctype="multipart/form-data">
+                    <form id="editProductForm" class="px-3" method="POST" action=""
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -376,14 +402,16 @@
 
     @php
         $productsData = [];
-        foreach($products as $p) {
+        foreach ($products as $p) {
             $productsData[] = [
                 'id' => $p->id,
                 'name' => $p->name,
                 'brand_id' => $p->brand_id,
+                'category_id' => $p->category_id,
                 'category_name' => $p->category ? $p->category->category_name : 'N/A',
                 'unit' => $p->unit,
-                'status' => $p->status
+                'unit_price' => $p->latestPurchase->unit_price ?? '—',
+                'status' => $p->status,
             ];
         }
     @endphp
@@ -396,22 +424,47 @@
             const tbody = document.getElementById('brand-products-tbody');
             tbody.innerHTML = '';
 
-            const brandProducts = productsData.filter(p => p.brand_id === brandId);
+            const normalizedBrandId = String(brandId);
+            const brandProducts = productsData.filter(p => String(p.brand_id) === normalizedBrandId);
 
             if (brandProducts.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No products found for this brand</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center">No products found for this brand</td></tr>';
             } else {
                 brandProducts.forEach((product, index) => {
                     const row = `
                         <tr>
                             <td>${index + 1}</td>
                             <td>${product.name}</td>
+                            <td>${product.unit_price ?? '—'}</td>
                             <td>${product.category_name}</td>
                             <td>${product.unit}</td>
                             <td>
                                 <span class="badge ${product.status == 1 ? 'bg-success' : 'bg-danger'}">
                                     ${product.status == 1 ? 'Active' : 'Inactive'}
                                 </span>
+                            </td>
+                            <td class="text-center align-middle">
+                                <div class="dropdown dropdown-action d-inline-block">
+                                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <ul>
+                                            <li>
+                                                <a class="dropdown-item" href="javascript:void(0)"
+                                                    onclick="openEditProductModalFromBrand(${product.id})">
+                                                    <i class="far fa-edit me-2"></i>Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="javascript:void(0)"
+                                                    onclick="deleteProductById(${product.id})">
+                                                    <i class="far fa-trash-alt me-2"></i>Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -440,9 +493,30 @@
             const modal = new bootstrap.Modal(document.getElementById('edit-product-modal'));
             modal.show();
         }
+
+        function openEditProductModalFromBrand(productId) {
+            const product = productsData.find(p => Number(p.id) === Number(productId));
+            if (!product) return;
+            openEditProductModal(
+                product.id,
+                product.brand_id,
+                product.name,
+                product.unit,
+                product.status,
+                product.category_id
+            );
+        }
+
+        function deleteProductById(productId) {
+            const deleteForm = document.getElementById('serviceDelete' + productId);
+            if (!deleteForm) return;
+            if (confirm('Are you sure to delete the product?')) {
+                deleteForm.submit();
+            }
+        }
     </script>
 
-    <script src="{{asset('assets')}}/plugins/select2/js/select2.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/select2/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
             // Initialize Select2 on brand dropdown in add product modal
