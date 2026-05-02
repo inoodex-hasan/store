@@ -6,63 +6,10 @@
             border-width: 0 !important;
         }
 
+        /* ── Table Wrapper ── */
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-        }
-
-        #productTable {
-            width: auto;
-            /* shrink to content width */
-            min-width: 300px;
-            /* minimum decent size */
-            margin: 0 auto;
-            /* center in the card */
-            font-size: 0.92rem;
-        }
-
-        #productTable th,
-        #productTable td {
-            vertical-align: middle;
-            padding: 10px 20px;
-            text-align: center !important;
-        }
-
-        #productTable td a {
-            display: block;
-            text-align: center !important;
-        }
-
-        #productTable th:nth-child(1),
-        #productTable td:nth-child(1) {
-            text-align: center;
-            /* # column centered */
-            padding: 10px 20px;
-            width: 50px;
-        }
-
-        /* Allow product name to wrap if needed */
-        #productTable td:nth-child(3) {
-            white-space: normal;
-            word-break: break-word;
-            text-align: center;
-        }
-
-        @media (max-width: 1366px) {
-            #productTable {
-                font-size: 0.78rem;
-            }
-
-            #productTable th,
-            #productTable td {
-                padding: 5px 6px;
-            }
-        }
-
-        @media (max-width: 1280px) {
-            #productTable {
-                font-size: 0.75rem;
-            }
         }
 
         .table-responsive::-webkit-scrollbar {
@@ -77,6 +24,119 @@
         .table-responsive::-webkit-scrollbar-thumb {
             background: #aaa;
             border-radius: 4px;
+        }
+
+        /* ── Main Table ── */
+        #productTable {
+            width: 55%;
+            margin: 0 auto;
+            font-size: 0.88rem;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        /* Header */
+        #productTable thead tr {
+            background: linear-gradient(135deg, #e8eaf6 0%, #ede7f6 100%);
+        }
+
+        #productTable thead th {
+            padding: 14px 24px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #4527a0;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border-bottom: 2px solid #b39ddb;
+            white-space: nowrap;
+        }
+
+        #productTable thead th:first-child {
+            border-radius: 10px 0 0 0;
+            width: 60px;
+        }
+
+        #productTable thead th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        /* Body rows */
+        #productTable tbody tr {
+            transition: background 0.18s ease, transform 0.15s ease;
+            border-bottom: 1px solid #f0eef8;
+        }
+
+        #productTable tbody tr:hover {
+            background: #f3f0fb;
+            transform: scale(1.008);
+            box-shadow: 0 2px 12px rgba(103, 58, 183, 0.08);
+            z-index: 1;
+            position: relative;
+        }
+
+        #productTable tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        #productTable tbody td {
+            padding: 13px 24px;
+            text-align: center;
+            vertical-align: middle;
+            color: #37474f;
+        }
+
+        /* Index badge */
+        #productTable tbody td:first-child {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #9575cd;
+        }
+
+        #productTable tbody td:first-child span.idx-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #ede7f6;
+            color: #6d4c41;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        /* Brand name link */
+        #productTable tbody td a {
+            display: inline-block;
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #5e35b1;
+            text-decoration: none;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1.5px solid transparent;
+            transition: all 0.18s ease;
+            letter-spacing: 0.01em;
+        }
+
+        #productTable tbody td a:hover {
+            background: #ede7f6;
+            border-color: #b39ddb;
+            color: #4527a0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            #productTable {
+                width: 75%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #productTable {
+                width: 100%;
+            }
         }
     </style>
     <div class="content container-fluid">
@@ -268,10 +328,10 @@
 
                                     @foreach ($brandRows as $product)
                                         <tr>
-                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td><span class="idx-badge">{{ $loop->index + 1 }}</span></td>
                                             <td>
                                                 @if ($product->brand)
-                                                    <a href="javascript:void(0)" class="text-decoration-none fw-semibold"
+                                                    <a href="javascript:void(0)"
                                                         onclick="showBrandProducts({{ $product->brand_id }}, '{{ $product->brand->name }}')">
                                                         {{ $product->brand->name }}
                                                     </a>

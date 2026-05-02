@@ -27,11 +27,11 @@
 
                 <div class="list-btn">
                     <!-- <ul class="filter-list">
-              <li>
-                <a class="btn btn-primary" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#add-payment-modal">
-                  <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Product </a>
-              </li>
-            </ul> -->
+                  <li>
+                    <a class="btn btn-primary" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#add-payment-modal">
+                      <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Product </a>
+                  </li>
+                </ul> -->
 
                     <div id="add-payment-modal" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
                         <div class="modal-dialog">
