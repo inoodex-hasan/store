@@ -207,16 +207,16 @@
                     <div class="card-table">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="productTable" class="table table-hover">
+                                {{-- <table id="productTable" class="table table-hover"> --}}
+                                    <table id="productTable" class="table table-hover" style="table-layout: fixed; width: 100%;">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th>#</th>
-                                            <th> Product Name (প্রোডাক্ট নাম) </th>
-                                            <th> Brand (ব্র্যান্ড)</th>
-                                            {{-- <th> Type (টাইপ)</th> --}}
-                                            <th> Quantity (পরিমাণ) </th>
-                                            <th class="no-sort">Actions (একশন)</th>
-                                        </tr>
+        <th style="width: 5%">#</th>
+        <th style="width: 30%">Product Name (প্রোডাক্ট নাম)</th>
+        <th style="width: 30%">Brand (ব্র্যান্ড)</th>
+        <th style="width: 15%">Quantity (পরিমাণ)</th>
+        <th class="no-sort" style="width: 20%">Actions (একশন)</th>
+    </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($stocks as $stock)
