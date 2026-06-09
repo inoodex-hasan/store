@@ -65,7 +65,7 @@
                                                 <div class="mb-3">
                                                     <label for="product_id" class="form-label"> Select Product <span
                                                             class="text-danger">*</span></label>
-                                                    <select name="product_id" id="product_id" class="form-select" required>
+                                                    <select name="product_id" id="product_id" class="form-select " required>
                                                         <option value="" disabled selected>-- Select Product --
                                                         </option>
                                                         @foreach ($products as $product)
@@ -138,7 +138,7 @@
                 <form action="{{ route('stock.index') }}" method="GET" class="row g-2 mb-3">
 
                     <div class="col-md-2">
-                        <select name="product_id" class="form-select">
+                        <select name="product_id" class="form-select ">
                             <option value="">All Products</option>
                             @foreach ($products as $product)
                                 <option value="{{ $product->id }}"
@@ -150,6 +150,18 @@
                     </div>
 
                     <div class="col-md-2">
+                        <select name="brand_id" class="form-select ">
+                            <option value="">All Brands</option>
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->id }}"
+                                    {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                                    {{ $brand->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- <div class="col-md-2">
                         <select name="location" class="form-select">
                             <option value="">All Locations</option>
                             @foreach ($locations as $loc)
@@ -159,9 +171,6 @@
                             @endforeach
                         </select>
                     </div>
-
-
-
 
                     <div class="col-md-2">
                         <select name="type" class="form-select">
@@ -175,7 +184,7 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
                     <!-- <div class="col-md-2">
                         <input type="number" name="quantity" value="{{ request('quantity') }}" class="form-control"
@@ -203,8 +212,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th> Product Name (প্রোডাক্ট নাম) </th>
-                                            <th> Location (লোকেশন)</th>
-                                            <th> Type (টাইপ)</th>
+                                            <th> Brand (ব্র্যান্ড)</th>
+                                            {{-- <th> Type (টাইপ)</th> --}}
                                             <th> Quantity (পরিমাণ) </th>
                                             <th class="no-sort">Actions (একশন)</th>
                                         </tr>
@@ -214,8 +223,8 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $stock->product->name ?? 'N/A' }}</td>
-
-                                                <td>
+                                                <td>{{ $stock->product->brand->name ?? 'N/A' }}</td>
+                                                {{-- <td>
                                                     @if ($stock->type == 1)
                                                         {{ $stock->shop->location ?? 'N/A' }}
                                                     @elseif($stock->type == 2)
@@ -223,9 +232,9 @@
                                                     @else
                                                         Unknown
                                                     @endif
-                                                </td>
+                                                </td> --}}
 
-                                                <td>
+                                                {{-- <td>
                                                     @if ($stock->type == 1)
                                                         Shop
                                                     @elseif($stock->type == 2)
@@ -233,7 +242,7 @@
                                                     @else
                                                         Unknown
                                                     @endif
-                                                </td>
+                                                </td> --}}
 
                                                 {{--                                        <td>{{ $stock->quantity }}</td> --}}
 
@@ -318,7 +327,7 @@
                         {{-- Product select --}}
                         <div class="mb-3">
                             <label class="form-label"> Select Product <span class="text-danger">*</span></label>
-                            <select name="product_id" id="edit-product-id" class="form-select" required>
+                            <select name="product_id" id="edit-product-id" class="form-select " required>
                                 <option value="" disabled>-- Select Product --</option>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -503,4 +512,5 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @endsection

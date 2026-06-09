@@ -8,6 +8,7 @@ use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Stock;
+use App\Models\Brand;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use App\Models\TransferStock;
@@ -35,6 +36,13 @@ class StockController extends Controller
             $query->where('product_id', $request->product_id);
         }
 
+        // 🔸 Brand Filter
+        if ($request->filled('brand_id')) {
+            $query->whereHas('product', function ($q) use ($request) {
+                $q->where('brand_id', $request->brand_id);
+            });
+        }
+
         // 🔸 Location Filter (shop OR warehouse)
         if ($request->filled('location')) {
             $location = $request->location;
@@ -60,13 +68,14 @@ class StockController extends Controller
         $stocks = $query->latest()->get();
 
         $products = Product::all();
+        $brands = Brand::all();
         $shops = Shop::all();
         $warehouses = Warehouse::all();
         // 👉 merge shop & warehouse locations into one unique list
         $locations = $shops->pluck('location')->merge($warehouses->pluck('location'))->unique()->values();
         $types = Stock::select('type')->distinct()->pluck('type');
 
-        return view('frontend.pages.stock.index', compact('stocks', 'products', 'shops', 'warehouses', 'locations', 'types'));
+        return view('frontend.pages.stock.index', compact('stocks', 'products', 'brands', 'shops', 'warehouses', 'locations', 'types'));
     }
 
 
