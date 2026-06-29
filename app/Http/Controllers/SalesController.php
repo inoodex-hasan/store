@@ -35,29 +35,18 @@ public function index(Request $request)
     $services = Sale::join('customers', 'customers.id', 'sales.customer_id')
                     ->leftJoin('users', 'users.id', '=', 'sales.sales_by');
 
-    $defaultFilter = true;
-
     if ($request->from != "" && $request->to != "") {
         $from = date('Y-m-d 00:00:00', strtotime($request->from));
         $to = date('Y-m-d 23:59:59', strtotime($request->to));
         $services = $services->whereBetween('sales.created_at', [$from, $to]);
-        $defaultFilter = false;
     }
 
     if ($request->search_by == 'order_no' && $request->key != "") {
         $services = $services->where('sales.order_no', 'like', '%' . $request->key . '%');
-        $defaultFilter = false;
     }
 
     if (in_array($request->search_by, ['name', 'phone', 'email']) && $request->key != "") {
         $services = $services->where('customers.' . $request->search_by, 'like', '%' . $request->key . '%');
-        $defaultFilter = false;
-    }
-
-    if ($defaultFilter) {
-        $startOfMonth = date('Y-m-01 00:00:00');
-        $endOfMonth = date('Y-m-t 23:59:59');
-        $services = $services->whereBetween('sales.created_at', [$startOfMonth, $endOfMonth]);
     }
 
     $services = $services->select(
@@ -652,6 +641,40 @@ public function invoice($id)
     $setting = Setting::first(); // Get your app/company info
 
     return view('frontend.pages.sales.invoice', compact('setting'));
+}
+
+public function history(Request $request)
+{
+    $query = DB::table('sales_items')
+        ->join('sales', 'sales.id', '=', 'sales_items.order_id')
+        ->join('products', 'products.id', '=', 'sales_items.product_id')
+        ->select(
+            'products.name as product_name',
+            DB::raw('SUM(sales_items.qty) as total_qty')
+        );
+
+    if ($request->filled('date')) {
+        $query->whereDate('sales.created_at', $request->date);
+    } elseif ($request->filled('from') && $request->filled('to')) {
+        $query->whereDate('sales.created_at', '>=', $request->from)
+              ->whereDate('sales.created_at', '<=', $request->to . ' 23:59:59');
+    }
+
+    $query->groupBy('products.name')
+          ->orderBy('total_qty', 'desc');
+
+    $sales = $query->paginate(20);
+
+    $totalProductsSold = DB::table('sales_items')
+        ->join('sales', 'sales.id', '=', 'sales_items.order_id')
+        ->when($request->filled('date'), fn($q) => $q->whereDate('sales.created_at', $request->date))
+        ->when($request->filled('from') && $request->filled('to'), fn($q) => $q
+            ->whereDate('sales.created_at', '>=', $request->from)
+            ->whereDate('sales.created_at', '<=', $request->to . ' 23:59:59')
+        )
+        ->sum('sales_items.qty');
+
+    return view('frontend.pages.sales.history', compact('sales', 'request', 'totalProductsSold'));
 }
 
 

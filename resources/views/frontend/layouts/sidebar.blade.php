@@ -99,6 +99,16 @@
                             </span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="{{ route('sales.history') }}"
+                            class="{{ Route::currentRouteName() == 'sales.history' ? 'active' : '' }}">
+                            <i class="fe fe-clock"></i>
+                            <span>
+                                <span class="lang-en">Sales History</span>
+                                <span class="lang-bn" style="display:none">বিক্রয় ইতিহাস</span>
+                            </span>
+                        </a>
+                    </li>
                 @endcan
 
                 <!-- Customer Management -->

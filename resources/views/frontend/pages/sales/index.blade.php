@@ -26,7 +26,7 @@
 
             <div class="card-header cat-head">
 
-                <form action="{{ route('sales.index') }}" method="get">
+                <form action="{{ route('sales.index') }}" method="get" onsubmit="return validateSearch()">
                     <div class="row">
                         <div class="col-12 col-md-2">
                             <label for="">From</label>
@@ -41,7 +41,7 @@
 
                         <div class="col-12 col-md-2">
                             <label for="">Search By</label><br>
-                            <select name="search_by" id="" class="form-select">
+                            <select name="search_by" id="search_by" class="form-select">
                                 <option value="">--Select--</option>
                                 <option value="order_no"
                                     {{ isset($request) && $request->search_by == 'order_no' ? 'selected' : '' }}>Order
@@ -56,15 +56,11 @@
                                 <option value="email"
                                     {{ isset($request) && $request->search_by == 'email' ? 'selected' : '' }}>Email
                                 </option>
-                                <option value="product_name"
-                                    {{ isset($request) && $request->search_by == 'product_name' ? 'selected' : '' }}>
-                                    Product
-                                    Name</option>
                             </select>
                         </div>
                         <div class="col-12 col-md-2">
                             <label for="">Search Key</label><br>
-                            <input type="text" name="key" class="form-control"
+                            <input type="text" name="key" id="search_key" class="form-control"
                                 value="{{ isset($request) ? $request->key : '' }}">
                         </div>
                         <div class="col-12 col-md-2">
@@ -72,39 +68,31 @@
                             <button type="submit" name="search_for" value="filter" class="btn btn-primary"
                                 style="margin-top:25px;">Search</button>
                             <label for=""></label>
+                            <a href="{{ route('sales.index') }}" class="btn btn-secondary" style="margin-top:25px;">Reset</a>
+
                             <button type="submit" name="search_for" value="pdf" class="btn btn-primary"
                                 style="margin-top:25px;"><i class="fe fe-download"></i></button>
+                            <label for=""></label>
                         </div>
                     </div>
+                    <div id="search_error" class="text-danger mt-1" style="display:none;"></div>
                 </form>
+                <script>
+                function validateSearch() {
+                    const key = document.getElementById('search_key').value.trim();
+                    const searchBy = document.getElementById('search_by').value;
+                    const errorEl = document.getElementById('search_error');
+                    if (key !== '' && searchBy === '') {
+                        errorEl.textContent = 'Please select Search By first.';
+                        errorEl.style.display = 'block';
+                        return false;
+                    }
+                    errorEl.style.display = 'none';
+                    return true;
+                }
+                </script>
 
-                <!-- Search Filter -->
-                <div id="filter_inputs" class="card filter-card">
-                    <div class="card-body pb-0">
-                        <div class="row">
-                            <div class="col-sm-6 col-md-3">
-                                <div class="input-block mb-3">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="input-block mb-3">
-                                    <label>Email</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="input-block mb-3">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <!-- /Search Filter -->
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12">
@@ -142,19 +130,19 @@
                                                         aria-label="Phone: activate to sort column ascending">Payble
                                                         (পেয়েবল)
                                                     </th>
-                                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    {{-- <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Status: activate to sort column ascending">Sales By
                                                         (সেলস বাই)
-                                                    </th>
+                                                    </th> --}}
                                                     <th class="no-sort sorting_disabled" rowspan="1" colspan="1"
                                                         aria-label="Actions">Actions (একশন)</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($services as $service)
+                                                @forelse ($services as $service)
                                                     <tr role="row" class="odd">
-                                                        <td class="sorting_1">{{ $loop->index + 1 }}</td>
+                                                        <td class="sorting_1">{{ $services->firstItem() + $loop->index }}</td>
                                                         <td>
                                                             <h2 class="table-avatar">
                                                                 <span>{{ $service->created_at->format('Y-m-d') }}</span>
@@ -182,7 +170,7 @@
                                                             </h2>
                                                         </td>
                                                         <td> {{ $service->payble }} </td>
-                                                        <td> {{ $service->sales_by }} </td>
+                                                        {{-- <td> {{ $service->sales_by }} </td> --}}
                                                         <td class="d-flex align-items-center">
                                                             <div class="dropdown dropdown-action">
                                                                 <a href="#" class=" btn-action-icon "
@@ -231,7 +219,11 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">No sales list available</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                             <!-- Sale Details Modal -->
                                             <div class="modal fade" id="saleDetailsModal" tabindex="-1"
@@ -256,27 +248,8 @@
                                         </table>
 
 
-                                        <div class="row align-items-center">
-                                            <div class="col-md-6">
-                                                <div class="dataTables_length" id="DataTables_Table_0_length">
-                                                    <label>
-                                                        <select name="DataTables_Table_0_length"
-                                                            aria-controls="DataTables_Table_0"
-                                                            class="custom-select custom-select-sm form-control form-control-sm">
-                                                            <option value="10">10</option>
-                                                            <option value="25">25</option>
-                                                            <option value="50">50</option>
-                                                            <option value="100">100</option>
-                                                        </select>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="d-flex justify-content-end mt-4">
-                                                    {!! $services->links('pagination::bootstrap-5') !!}
-                                                </div>
-                                            </div>
-
+                                        <div class="d-flex justify-content-end mt-4">
+                                            {!! $services->withQueryString()->links('pagination::bootstrap-5') !!}
                                         </div>
 
 

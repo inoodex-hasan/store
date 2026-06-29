@@ -1,11 +1,15 @@
 @extends('frontend.layouts.app')
 @section('content')
-<div class="mad-coming-soon with-overlay mb-5 mt-3" data-bg-image-src="{{ asset('frontend') }}/images/slider/Untitled-5.jpg" style="background-image: url({{ asset('frontend') }}/images/slider/Untitled-5.jpg;);">
-    <div class="mad-coming-soon-content">
-      <h1 class="mad-coming-soon-title">Coming Soon</h1>
-      <p class="mad-text-big content-element-6">Our website is under construction.</p>
-      <!--================ Countdown ================-->
-      <!--================ End of Countdown ================-->
+<div class="d-flex align-items-center justify-content-center" style="min-height: 60vh;">
+    <div class="text-center">
+        <div class="mb-3">
+            <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #0d6efd;"></i>
+        </div>
+        <h1 style="font-size: 120px; font-weight: 700; color: #2c3e50; line-height: 1;">404</h1>
+        <p class="text-muted mb-4" style="font-size: 18px;">The page you are looking for was not found.</p>
+        <a href="{{ url('/') }}" class="btn btn-primary btn-lg px-4">
+            <i class="fas fa-home me-2"></i> Back to Home
+        </a>
     </div>
-  </div>
+</div>
 @endsection

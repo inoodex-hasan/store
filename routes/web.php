@@ -243,6 +243,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('sales-payments', [SalesController::class, 'payments'])->name('sales.payments');
         Route::get('sales/{id}/details', [SalesController::class, 'getSaleDetails'])->name('sales.details');
         Route::get('/sales/invoice/{id}', [SalesController::class, 'makeInvoice'])->name('sales.invoice');
+        Route::get('sales-history', [SalesController::class, 'history'])->name('sales.history');
 
 
 

@@ -64,9 +64,19 @@
 								
 								<form method="post" action="{{ route('login') }}">
                                     @csrf
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            @foreach ($errors->all() as $error)
+                                                <p class="mb-0">{{ $error }}</p>
+                                            @endforeach
+                                        </div>
+                                    @endif
 									<div class="input-block mb-3">
 										<label class="form-control-label">Email Address</label>
-										<input type="email" name="email" class="form-control">
+										<input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                                        {{-- @error('email')
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror --}}
 									</div>
 									<div class="input-block mb-3">
 										<label class="form-control-label">Password</label>
