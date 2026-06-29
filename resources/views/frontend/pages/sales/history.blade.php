@@ -23,7 +23,11 @@
                     <label>To Date</label>
                     <input type="date" name="to" class="form-control" value="{{ request('to') }}">
                 </div>
+<<<<<<< HEAD
                 <div class="col-md-2 w-350">
+=======
+                <div class="col-md-2">
+>>>>>>> 388af89e6faa5553199f55ffc7839218b44e1e12
                     <label>Product</label>
                     <select name="product_id" id="product_id" class="form-control">
                         <option value="">All Products</option>
@@ -33,8 +37,13 @@
                     </select>
                 </div>
                 <div class="col-md-4 d-flex gap-2">
+<<<<<<< HEAD
                     <button type="submit" class="btn btn-primary w-60">Filter</button>
                     <a href="{{ route('sales.history') }}" class="btn btn-secondary w-60">Reset</a>
+=======
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    <a href="{{ route('sales.history') }}" class="btn btn-secondary w-100">Reset</a>
+>>>>>>> 388af89e6faa5553199f55ffc7839218b44e1e12
                 </div>
             </form>
 
