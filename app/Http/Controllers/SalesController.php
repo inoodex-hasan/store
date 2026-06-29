@@ -660,6 +660,10 @@ public function history(Request $request)
               ->whereDate('sales.created_at', '<=', $request->to . ' 23:59:59');
     }
 
+    if ($request->filled('product_id')) {
+        $query->where('sales_items.product_id', $request->product_id);
+    }
+
     $query->groupBy('products.name')
           ->orderBy('total_qty', 'desc');
 
@@ -667,18 +671,21 @@ public function history(Request $request)
 
     $totalProductsSold = DB::table('sales_items')
         ->join('sales', 'sales.id', '=', 'sales_items.order_id')
+        ->join('products', 'products.id', '=', 'sales_items.product_id')
         ->when($request->filled('date'), fn($q) => $q->whereDate('sales.created_at', $request->date))
         ->when($request->filled('from') && $request->filled('to'), fn($q) => $q
             ->whereDate('sales.created_at', '>=', $request->from)
             ->whereDate('sales.created_at', '<=', $request->to . ' 23:59:59')
         )
+        ->when($request->filled('product_id'), fn($q) => $q->where('sales_items.product_id', $request->product_id))
         ->sum('sales_items.qty');
 
-    return view('frontend.pages.sales.history', compact('sales', 'request', 'totalProductsSold'));
+    $products = DB::table('products')->where('status', '1')->orderBy('name')->get(['id', 'name']);
+
+    return view('frontend.pages.sales.history', compact('sales', 'request', 'totalProductsSold', 'products'));
 }
 
 
 }
 
 
-//ALTER TABLE `products` ADD `price` INT NOT NULL DEFAULT '0' AFTER `model`; 

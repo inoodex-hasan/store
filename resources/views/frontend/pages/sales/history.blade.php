@@ -11,19 +11,28 @@
 
         <div class="card-body">
             <form action="{{ route('sales.history') }}" method="GET" class="row align-items-end mb-3">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>Specific Date</label>
                     <input type="date" name="date" class="form-control" value="{{ request('date') }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>From Date</label>
                     <input type="date" name="from" class="form-control" value="{{ request('from') }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>To Date</label>
                     <input type="date" name="to" class="form-control" value="{{ request('to') }}">
                 </div>
-                <div class="col-md-3 d-flex gap-2">
+                <div class="col-md-2">
+                    <label>Product</label>
+                    <select name="product_id" id="product_id" class="form-control">
+                        <option value="">All Products</option>
+                        @foreach($products as $product)
+                            <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex gap-2">
                     <button type="submit" class="btn btn-primary w-100">Filter</button>
                     <a href="{{ route('sales.history') }}" class="btn btn-secondary w-100">Reset</a>
                 </div>
@@ -75,4 +84,39 @@
         </div>
     </div>
 </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $('#product_id').select2({
+            placeholder: 'All Products',
+            allowClear: false,
+            width: '100%'
+        });
+    </script>
+    <style>
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 36px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px;
+        right: 10px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: #6c757d transparent transparent transparent !important;
+        border-width: 6px 5px 0 5px !important;
+        border-style: solid !important;
+        height: 0 !important;
+        width: 0 !important;
+        padding: 0 !important;
+        transform: none !important;
+        margin-left: -5px !important;
+        margin-top: -3px !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+    }
+    </style>
 @endsection
