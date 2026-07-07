@@ -510,6 +510,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('#product_id').select2({
+                dropdownParent: $('#add-product-modal'),
+                width: '100%'
+            });
+            $('#edit-product-id').select2({
+                dropdownParent: $('#edit-inventory-modal'),
+                width: '100%'
+            });
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

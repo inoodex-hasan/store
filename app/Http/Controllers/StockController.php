@@ -12,6 +12,7 @@ use App\Models\Brand;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use App\Models\TransferStock;
+use App\Models\StockMovement;
 
 class StockController extends Controller
 {
@@ -126,5 +127,59 @@ class StockController extends Controller
     {
         Stock::stockDelete($id);
         return back()->with('message', 'Stock info deleted successfully!');
+    }
+
+
+    public function history(Request $request)
+    {
+        $query = StockMovement::with(['product', 'user']);
+
+        // 🔸 Date filter
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        } elseif ($request->filled('from') && $request->filled('to')) {
+            $query->whereDate('created_at', '>=', $request->from)
+                  ->whereDate('created_at', '<=', $request->to);
+        }
+
+        // 🔸 Product filter
+        if ($request->filled('product_id')) {
+            $query->where('product_id', $request->product_id);
+        }
+
+        // 🔸 Brand filter
+        if ($request->filled('brand_id')) {
+            $query->whereHas('product', function ($q) use ($request) {
+                $q->where('brand_id', $request->brand_id);
+            });
+        }
+
+        // 🔸 Location type filter (Shop / Warehouse)
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        $movements = $query->with(['product', 'user', 'shop', 'warehouse'])->latest()->paginate(20)->withQueryString();
+
+        // Summary stats
+        $totalMovements = $movements->total();
+        $totalQuantityChanged = StockMovement::when($request->filled('date'), fn($q) => $q->whereDate('created_at', $request->date))
+            ->when($request->filled('from') && $request->filled('to'), fn($q) => $q
+                ->whereDate('created_at', '>=', $request->from)
+                ->whereDate('created_at', '<=', $request->to))
+            ->when($request->filled('product_id'), fn($q) => $q->where('product_id', $request->product_id))
+            ->sum('quantity_change');
+
+        $products = \App\Models\Product::with('brand')->where('status', '1')->orderBy('name')->get(['id', 'name']);
+        $brands = \App\Models\Brand::where('status', '1')->orderBy('name')->get(['id', 'name']);
+
+        return view('frontend.pages.stock.history', compact(
+            'movements',
+            'request',
+            'totalMovements',
+            'totalQuantityChanged',
+            'products',
+            'brands'
+        ));
     }
 }

@@ -129,7 +129,9 @@ class ProductReturn extends Model
         }
 
         if ($stock) {
+            $qtyBefore = $stock->quantity;
             $stock->increment('quantity', $item->quantity);
+            $qtyAfter = $stock->quantity;
         } else {
             Stock::create([
                 'product_id' => $item->product_id,
@@ -137,7 +139,20 @@ class ProductReturn extends Model
                 'location' => $location ?? 1,
                 'quantity' => $item->quantity
             ]);
+            $qtyBefore = 0;
+            $qtyAfter = $item->quantity;
         }
+
+        // Log stock movement for return
+        StockMovement::log(
+            $item->product_id,
+            $type,
+            $location ?? 1,
+            $qtyBefore,
+            $item->quantity,
+            'return',
+            $this->id
+        );
     }
 
     // Reject return

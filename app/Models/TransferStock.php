@@ -50,10 +50,22 @@ class TransferStock extends Model
             }
 
             // 3. Create transfer record
-            self::create($data);
+            $transfer = self::create($data);
 
             // 4. Decrease warehouse stock quantity
+            $warehouseQtyBefore = $warehouseStock->quantity;
             $warehouseStock->decrement('quantity', $quantity);
+
+            // Log warehouse deduction (transfer_out)
+            \App\Models\StockMovement::log(
+                $data['product_id'],
+                2, // Warehouse
+                $data['stock_from'],
+                $warehouseQtyBefore,
+                -$quantity,
+                'transfer_out',
+                $transfer->id
+            );
 
             // 5. Increase or create shop stock quantity
             $shopStock = Stock::where([
@@ -63,7 +75,9 @@ class TransferStock extends Model
             ])->first();
 
             if ($shopStock) {
+                $shopQtyBefore = $shopStock->quantity;
                 $shopStock->increment('quantity', $quantity);
+                $shopQtyAfter = $shopStock->quantity;
             } else {
                 Stock::create([
                     'product_id' => $data['product_id'],
@@ -71,7 +85,20 @@ class TransferStock extends Model
                     'quantity'   => $quantity,
                     'type'       => 1, // Shop
                 ]);
+                $shopQtyBefore = 0;
+                $shopQtyAfter = $quantity;
             }
+
+            // Log shop addition (transfer_in)
+            \App\Models\StockMovement::log(
+                $data['product_id'],
+                1, // Shop
+                $data['stock_to'],
+                $shopQtyBefore,
+                $quantity,
+                'transfer_in',
+                $transfer->id
+            );
         });
     }
 

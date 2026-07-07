@@ -209,6 +209,16 @@
                             </span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="{{ route('stock.history') }}"
+                            class="{{ Route::currentRouteName() == 'stock.history' ? 'active' : '' }}">
+                            <i class="fe fe-clock"></i>
+                            <span>
+                                <span class="lang-en">Stock History</span>
+                                <span class="lang-bn" style="display:none">স্টক ইতিহাস</span>
+                            </span>
+                        </a>
+                    </li>
                 @endcan
 
                 <!-- Transfer Stock Management -->

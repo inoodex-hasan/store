@@ -127,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/stock/edit/{id}', [StockController::class, 'edit'])->name('stock.edit');
             Route::post('/stock/update/{id}', [StockController::class, 'stockUpdate'])->name('stock.update');
             Route::delete('/stock/delete/{id}', [StockController::class, 'stockDelete'])->name('stock.delete');
+            Route::get('/stock-history', [StockController::class, 'history'])->name('stock.history');
             // End Stock Management
         });
     });

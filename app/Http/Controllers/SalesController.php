@@ -312,6 +312,7 @@ public function index(Request $request)
                 ->first();
 
             if ($shopStock) {
+                $qtyBefore = $shopStock->quantity;
                 $shopStock->quantity -= $item['quantity'];
 
                 if ($shopStock->quantity <= 0) {
@@ -319,6 +320,17 @@ public function index(Request $request)
                 } else {
                     $shopStock->save();
                 }
+
+                // Log stock movement for sale deduction
+                \App\Models\StockMovement::log(
+                    $item['product_id'],
+                    1, // type = Shop
+                    $shopStock->location ?? 0,
+                    $qtyBefore,
+                    -$item['quantity'],
+                    'sale',
+                    $sale->id
+                );
             } else {
                 throw new \Exception("Not enough shop stock for product ID {$item['product_id']}");
             }
