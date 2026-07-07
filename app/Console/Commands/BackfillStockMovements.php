@@ -12,7 +12,7 @@ use App\Models\Stock;
 
 class BackfillStockMovements extends Command
 {
-    protected $signature = 'stock:backfill-movements';
+    protected $signature = 'stock:backfill';
     protected $description = 'Reconstruct historical stock movements from existing data';
 
     public function handle()
