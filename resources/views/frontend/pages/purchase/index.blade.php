@@ -1,691 +1,115 @@
 @extends('frontend.layouts.app')
 @section('content')
-
     <div class="content container-fluid">
-        <div class="page-header">
-            <!-- <div class="content-page-header mt-5">
-                                                                                        <h5>Purchase List</h5>
-                                                                                        <div class="list-btn">
-                                                                                            <ul class="filter-list">
-                                                                                            <li>
-                                                                                                <a class="btn btn-primary" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#add-purchase-modal">
-                                                                                                <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Purchase</a>
-                                                                                            </li>
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                    </div> -->
-
-            <div id="add-purchase-modal" class="modal fade" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content shadow">
-                        <div class="modal-header cat-head">
-                            <h5 class="modal-title" id="add-purchase-modal">Add Purchase</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-
-
-                        <div class="modal-body">
-                            <form class="px-3" method="post" action="{{ route('purchase.store') }}">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="product_id" class="form-label"> Product<span class="text-danger"> *
-                                        </span></label>
-                                    <select class="form-control select2" name="product_id" id="product_id" required>
-                                        <option value="">Select Product</option>
-                                        @foreach ($products as $product)
-                                            <option value="{{ $product->id }}">
-                                                {{ $product->name }}({{ $product->model ?? 'N/A' }})</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="quantity" class="form-label">Quantity</label>
-                                    <input type="number" name="quantity" class="form-control" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="unit_price" class="form-label">Last Unit Price</label>
-                                    <input type="number" step="0.01" name="unit_price" id="unit_price"
-                                        class="form-control" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="sub_price" class="form-label">Sub Price</label>
-                                    <input type="number" step="0.01" name="sub_price" class="form-control">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="total_price" class="form-label">Paybale Total Price</label>
-                                    <input type="number" step="0.01" name="total_price" class="form-control" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="payment" class="form-label">Payment</label>
-                                    <input type="number" step="0.01" name="payment" class="form-control" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="due" class="form-label">Due</label>
-                                    <input type="number" step="0.01" name="due" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label>Vendor</label>
-                                    <select id="vendor" name="vendor_id" class="form-control" required>
-                                        <option value="">Select Vendor</option>
-                                        @foreach ($vendors as $vendor)
-                                            <option value="{{ $vendor->id }}">
-                                                {{ $vendor->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn create-btn">Submit</button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <div class="modern-card">
+            <div class="card-header">
+                <h5>Purchase List</h5>
+                <a class="btn btn-light btn-sm text-dark" href="{{ route('purchase.create') }}">
+                    <i class="fa fa-plus-circle"></i> Add Purchase
+                </a>
             </div>
-        </div>
-        <!-- /Page Header -->
-        <!-- Search Filter -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card shadow">
-                    <div class="card-header cat-head d-flex justify-content-between alignn-align-items-center">
-                        <h5 class="card-title mb-0 flex-grow-1 fw-bold">Purchase List</h5>
-                        <a class="btn create-btn-outline" href="javascript:void(0)" data-bs-toggle="modal"
-                            data-bs-target="#add-purchase-modal">
-                            <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Purchase</a>
-                    </div>
+            <div class="card-body">
+                <div class="filter-bar">
+                    <form action="{{ route('purchase.index') }}" method="GET" class="row g-2">
+                        <div class="col-md-3 p-1">
+                            <select name="vendor_id" class="form-select form-select-sm">
+                                <option value="">All Vendors</option>
+                                @foreach ($vendors as $vendor)
+                                    <option value="{{ $vendor->id }}"
+                                        {{ request('vendor_id') == $vendor->id ? 'selected' : '' }}>
+                                        {{ $vendor->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2 p-1">
+                            <input type="number" name="quantity" value="{{ request('quantity') }}"
+                                class="form-control form-control-sm" placeholder="Quantity">
+                        </div>
+                        <div class="col-md-2 p-1">
+                            <input type="number" step="0.01" name="unit_price" value="{{ request('unit_price') }}"
+                                class="form-control form-control-sm" placeholder="Unit Price">
+                        </div>
+                        <div class="col-md-3 d-flex gap-1">
+                            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                            <a href="{{ route('purchase.index') }}" class="btn btn-secondary btn-sm">Reset</a>
+                        </div>
+                    </form>
+                </div>
 
-                    <div class="card mb-3 p-3">
-                        <form action="{{ route('purchase.index') }}" method="GET" class="row g-2 mb-3">
-
-                            <div class="col-md-2">
-                                <select name="vendor_id" class="form-select">
-                                    <option value="">All Vendors</option>
-                                    @foreach ($vendors as $vendor)
-                                        <option value="{{ $vendor->id }}"
-                                            {{ request('vendor_id') == $vendor->id ? 'selected' : '' }}>
-                                            {{ $vendor->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- <div class="col-md-2">
-                                <select name="product_id" class="form-select">
-                                    <option value="">All Products</option>
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                                            {{ $product->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-
-
-
-                            <div class="col-md-2">
-                                <input type="number" name="quantity" value="{{ request('quantity') }}"
-                                    class="form-control" placeholder="Quantity">
-                            </div>
-
-                            <div class="col-md-2">
-                                <input type="number" step="0.01" name="unit_price"
-                                    value="{{ request('unit_price') }}" class="form-control" placeholder="Unit Price">
-                            </div>
-
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary w-100">Filter</button>
-                            </div>
-                            <div class="col-md-1">
-                                <a href="{{ route('purchase.index') }}" class="btn btn-secondary w-100">Reset</a>
-                            </div>
-                        </form>
-                    </div>
-
-
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-center table-hover">
-                                <thead>
-                                    <tr>
-                                        <th> # </th>
-                                        <th> Date (তারিখ) </th>
-                                        <th> Product (প্রোডাক্ট)</th>
-                                        <th> Vendor (ভেন্ডর)</th>
-                                        <th> Qty (পরিমাণ)</th>
-                                        <th> Unit Price (ইউনিট প্রাইস)</th>
-                                        <th> Total Price (টোটাল প্রাইস)</th>
-                                        <th> Payment (পেমেন্ট)</th>
-                                        <th> Due (বাকি)</th>
-                                        <th> Action (একশন)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($purchases as $purchase)
-                                        <tr>
-                                            <td> {{ $loop->iteration }} </td>
-                                            <td> {{ $purchase->created_at->format('Y-m-d') }} </td>
-                                            <td> {{ $purchase->product->name ?? 'N/A' }}({{ $purchase->product->model ?? 'N/A' }})
-                                            </td>
-                                            <td> {{ $purchase->vendor->name ?? 'N/A' }} </td>
-                                            <td> {{ $purchase->quantity }} </td>
-                                            <td> {{ $purchase->unit_price }} </td>
-                                            <td> {{ $purchase->total_price }} </td>
-                                            <td> {{ $purchase->payment }} </td>
-                                            <td> {{ $purchase->due }} </td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" data-bs-toggle="modal"
-                                                            data-bs-target="#edit-purchase-{{ $purchase->id }}">Edit</a>
-                                                        <form method="POST"
-                                                            action="{{ route('purchase.destroy', $purchase->id) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item"
-                                                                onclick="return confirm('Are you sure?')">Delete</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Edit Modal -->
-                                        <div id="edit-purchase-{{ $purchase->id }}" class="modal fade" tabindex="-1"
-                                            aria-labelledby="editModalLabel-{{ $purchase->id }}" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel-{{ $purchase->id }}">
-                                                            Edit
-                                                            Purchase</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-                                                        <form method="POST"
-                                                            action="{{ route('purchase.update', $purchase->id) }}">
-                                                            @csrf
-                                                            @method('PUT')
-
-                                                            <div class="mb-3">
-                                                                <label for="edit-product_id-{{ $purchase->id }}"
-                                                                    class="form-label">Product</label>
-                                                                <select id="edit-product_id-{{ $purchase->id }}"
-                                                                    name="product_id" class="form-select select2"
-                                                                    required>
-                                                                    @foreach ($products as $product)
-                                                                        <option value="{{ $product->id }}"
-                                                                            {{ $product->id == $purchase->product_id ? 'selected' : '' }}>
-                                                                            {{ $product->name }}
-                                                                            ({{ $product->model ?? 'N/A' }})
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit-quantity-{{ $purchase->id }}"
-                                                                    class="form-label">Quantity</label>
-                                                                <input id="edit-quantity-{{ $purchase->id }}"
-                                                                    name="quantity" value="{{ $purchase->quantity }}"
-                                                                    class="form-control" placeholder="Quantity" />
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit-unit_price-{{ $purchase->id }}"
-                                                                    class="form-label">Last Unit Price</label>
-                                                                <input id="edit-unit_price-{{ $purchase->id }}"
-                                                                    name="unit_price" value="{{ $purchase->unit_price }}"
-                                                                    class="form-control" placeholder="Unit Price" />
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit-sub_price-{{ $purchase->id }}"
-                                                                    class="form-label">Sub Price</label>
-                                                                <input id="edit-sub_price-{{ $purchase->id }}"
-                                                                    name="sub_price" value="{{ $purchase->sub_price }}"
-                                                                    class="form-control" placeholder="Sub Price" />
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit-total_price-{{ $purchase->id }}"
-                                                                    class="form-label">Paybale Total Price</label>
-                                                                <input id="edit-total_price-{{ $purchase->id }}"
-                                                                    name="total_price"
-                                                                    value="{{ $purchase->total_price }}"
-                                                                    class="form-control" placeholder="Total Price" />
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit-payment-{{ $purchase->id }}"
-                                                                    class="form-label">Payment</label>
-                                                                <input id="edit-payment-{{ $purchase->id }}"
-                                                                    name="payment" value="{{ $purchase->payment }}"
-                                                                    class="form-control" placeholder="Payment" />
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit-due-{{ $purchase->id }}"
-                                                                    class="form-label">Due</label>
-                                                                <input id="edit-due-{{ $purchase->id }}" name="due"
-                                                                    value="{{ $purchase->due }}" class="form-control"
-                                                                    placeholder="Due" />
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="vendor" class="form-label">Vendor</label>
-                                                                <select id="vendor" name="vendor_id"
-                                                                    class="form-select" required>
-                                                                    <option value="">Select Vendor</option>
-                                                                    @foreach ($vendors as $vendor)
-                                                                        <option value="{{ $vendor->id }}"
-                                                                            {{ $vendor->id == $purchase->vendor_id ? 'selected' : '' }}>
-                                                                            {{ $vendor->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="modal-footer">
-                                                                <button type="submit"
-                                                                    class="btn create-btn">Update</button>
-
-                                                            </div>
-
-                                                        </form>
-                                                    </div>
-
-                                                </div>
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date (তারিখ)</th>
+                                <th>Product (প্রোডাক্ট)</th>
+                                <th>Vendor (ভেন্ডর)</th>
+                                <th>Qty (পরিমাণ)</th>
+                                <th>Unit Price (ইউনিট প্রাইস)</th>
+                                <th>Total Price (টোটাল)</th>
+                                <th>Payment (পেমেন্ট)</th>
+                                <th>Due (বাকি)</th>
+                                <th>Action (একশন)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($purchases as $purchase)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $purchase->created_at->format('Y-m-d') }}</td>
+                                    <td>{{ $purchase->product->name ?? 'N/A' }}({{ $purchase->product->model ?? 'N/A' }})</td>
+                                    <td>{{ $purchase->vendor->name ?? 'N/A' }}</td>
+                                    <td>{{ $purchase->quantity }}</td>
+                                    <td>{{ $purchase->unit_price }}</td>
+                                    <td>{{ $purchase->total_price }}</td>
+                                    <td>{{ $purchase->payment }}</td>
+                                    <td>{{ $purchase->due }}</td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="{{ route('purchase.edit', $purchase->id) }}">
+                                                    <i class="far fa-edit"></i> Edit
+                                                </a>
+                                                <form method="POST" action="{{ route('purchase.destroy', $purchase->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item text-danger"
+                                                        onclick="return confirm('Are you sure?')">
+                                                        <i class="far fa-trash-alt"></i> Delete
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
-                            <div class="d-flex justify-content-end mt-4">
-                                {!! $purchases->links('pagination::bootstrap-5') !!}
-                            </div>
-                        </div>
-                    </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
+
+                @if ($purchases->hasPages())
+                    <div class="modern-pagination">
+                        {{ $purchases->links('pagination::bootstrap-5') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
-    {{-- old the current script only calculates sub price, not total, and doesn’t auto-fill payment  --}}
-
-    {{-- <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const quantityInput = document.querySelector('input[name="quantity"]');
-    const unitPriceInput = document.querySelector('input[name="unit_price"]');
-    const subPriceInput = document.querySelector('input[name="sub_price"]');
-    const totalPriceInput = document.querySelector('input[name="total_price"]');
-    const paymentInput = document.querySelector('input[name="payment"]');
-    const dueInput = document.querySelector('input[name="due"]');
-
-    function calculateSubPrice() {
-        const quantity = parseFloat(quantityInput.value) || 0;
-        const unitPrice = parseFloat(unitPriceInput.value) || 0;
-        subPriceInput.value = (quantity * unitPrice).toFixed(2);
-    }
-
-    function calculateDue() {
-        const total = parseFloat(totalPriceInput.value) || 0;
-        const payment = parseFloat(paymentInput.value) || 0;
-        dueInput.value = (total - payment).toFixed(2);
-    }
-
-    quantityInput.addEventListener('input', calculateSubPrice);
-    unitPriceInput.addEventListener('input', calculateSubPrice);
-    totalPriceInput.addEventListener('input', calculateDue);
-    paymentInput.addEventListener('input', calculateDue);
-});
-</script> --}}
-
-    {{-- old the current script only calculates sub price, not total, and doesn’t auto-fill payment  --}}
-
-
-
-
-
-    {{-- old edit --}}
-
-    {{--  
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    @foreach ($purchases as $purchase)
-    const quantityInput_ {
-        {
-            $purchase - > id
-        }
-    } = document.getElementById('edit-quantity-{{ $purchase->id }}');
-    const unitPriceInput_ {
-        {
-            $purchase - > id
-        }
-    } = document.getElementById('edit-unit_price-{{ $purchase->id }}');
-    const subPriceInput_ {
-        {
-            $purchase - > id
-        }
-    } = document.getElementById('edit-sub_price-{{ $purchase->id }}');
-    const totalPriceInput_ {
-        {
-            $purchase - > id
-        }
-    } = document.getElementById('edit-total_price-{{ $purchase->id }}');
-    const paymentInput_ {
-        {
-            $purchase - > id
-        }
-    } = document.getElementById('edit-payment-{{ $purchase->id }}');
-    const dueInput_ {
-        {
-            $purchase - > id
-        }
-    } = document.getElementById('edit-due-{{ $purchase->id }}');
-
-    function calculateSubPrice_ {
-        {
-            $purchase - > id
-        }
-    }() {
-        const quantity = parseFloat(quantityInput_ {
-            {
-                $purchase - > id
-            }
-        }.value) || 0;
-        const unitPrice = parseFloat(unitPriceInput_ {
-            {
-                $purchase - > id
-            }
-        }.value) || 0;
-        subPriceInput_ {
-            {
-                $purchase - > id
-            }
-        }.value = (quantity * unitPrice).toFixed(2);
-    }
-
-    function calculateDue_ {
-        {
-            $purchase - > id
-        }
-    }() {
-        const total = parseFloat(totalPriceInput_ {
-            {
-                $purchase - > id
-            }
-        }.value) || 0;
-        const payment = parseFloat(paymentInput_ {
-            {
-                $purchase - > id
-            }
-        }.value) || 0;
-        dueInput_ {
-            {
-                $purchase - > id
-            }
-        }.value = (total - payment).toFixed(2);
-    }
-
-    quantityInput_ {
-        {
-            $purchase - > id
-        }
-    }.addEventListener('input', calculateSubPrice_ {
-        {
-            $purchase - > id
-        }
-    });
-    unitPriceInput_ {
-        {
-            $purchase - > id
-        }
-    }.addEventListener('input', calculateSubPrice_ {
-        {
-            $purchase - > id
-        }
-    });
-    totalPriceInput_ {
-        {
-            $purchase - > id
-        }
-    }.addEventListener('input', calculateDue_ {
-        {
-            $purchase - > id
-        }
-    });
-    paymentInput_ {
-        {
-            $purchase - > id
-        }
-    }.addEventListener('input', calculateDue_ {
-        {
-            $purchase - > id
-        }
-    });
-    @endforeach
-});
-</script>
-
-
-<script>
-$(document).ready(function() {
-    $('#product_id').on('change', function() {
-        var productId = $(this).val();
-
-        if (productId) {
-            var url = '{{ route("purchase.latest_price", ":id") }}';
-            url = url.replace(':id', productId);
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(response) {
-                    console.log(response);
-                    $('#unit_price').val(response.price);
-                },
-                error: function() {
-                    $('#unit_price').val(0);
-                }
-            });
-        } else {
-            $('#unit_price').val(0);
-        }
-    });
-});
-</script> --}}
-
-    {{-- old edit --}}
-
-
-
-    {{-- Start***** NaYeem***** Script for add with calculates sub price,total, and auto-fill payment --}}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            const quantityInput = document.querySelector('input[name="quantity"]');
-            const unitPriceInput = document.querySelector('input[name="unit_price"]');
-            const subPriceInput = document.querySelector('input[name="sub_price"]');
-            const totalPriceInput = document.querySelector('input[name="total_price"]');
-            const paymentInput = document.querySelector('input[name="payment"]');
-            const dueInput = document.querySelector('input[name="due"]');
-
-            function calculateSubAndTotal() {
-                const quantity = parseFloat(quantityInput.value) || 0;
-                const unitPrice = parseFloat(unitPriceInput.value) || 0;
-                const subTotal = quantity * unitPrice;
-
-                subPriceInput.value = subTotal.toFixed(2);
-                totalPriceInput.value = subTotal.toFixed(2);
-
-                // Always auto-fill payment = total
-                paymentInput.value = subTotal.toFixed(2);
-
-                calculateDue();
-            }
-
-            function calculateDue() {
-                const total = parseFloat(totalPriceInput.value) || 0;
-                const payment = parseFloat(paymentInput.value) || 0;
-                dueInput.value = (total - payment).toFixed(2);
-            }
-
-            quantityInput.addEventListener('input', calculateSubAndTotal);
-            unitPriceInput.addEventListener('input', calculateSubAndTotal);
-            paymentInput.addEventListener('input', calculateDue); //  Listen to manual payment edits
-
-        });
-    </script>
-
-
-    {{-- End***** NaYeem***** Script for add with calculates sub price,total, and auto-fill payment --}}
-
-
-
-
-
-    {{-- Start***** NaYeem***** Script for edit --}}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            @foreach ($purchases as $purchase)
-                const quantityInput_{{ $purchase->id }} = document.getElementById(
-                    'edit-quantity-{{ $purchase->id }}');
-                const unitPriceInput_{{ $purchase->id }} = document.getElementById(
-                    'edit-unit_price-{{ $purchase->id }}');
-                const subPriceInput_{{ $purchase->id }} = document.getElementById(
-                    'edit-sub_price-{{ $purchase->id }}');
-                const totalPriceInput_{{ $purchase->id }} = document.getElementById(
-                    'edit-total_price-{{ $purchase->id }}');
-                const paymentInput_{{ $purchase->id }} = document.getElementById(
-                    'edit-payment-{{ $purchase->id }}');
-                const dueInput_{{ $purchase->id }} = document.getElementById('edit-due-{{ $purchase->id }}');
-
-                // Track if payment was manually edited
-                let manualPayment_{{ $purchase->id }} = false;
-
-                function calculateSubAndTotal_{{ $purchase->id }}() {
-                    const quantity = parseFloat(quantityInput_{{ $purchase->id }}.value) || 0;
-                    const unitPrice = parseFloat(unitPriceInput_{{ $purchase->id }}.value) || 0;
-                    const sub = quantity * unitPrice;
-
-                    subPriceInput_{{ $purchase->id }}.value = sub.toFixed(2);
-                    totalPriceInput_{{ $purchase->id }}.value = sub.toFixed(2);
-
-                    // Only auto-update payment if user hasn’t manually typed
-                    if (!manualPayment_{{ $purchase->id }}) {
-                        paymentInput_{{ $purchase->id }}.value = sub.toFixed(2);
-                    }
-
-                    calculateDue_{{ $purchase->id }}();
-                }
-
-                function calculateDue_{{ $purchase->id }}() {
-                    const total = parseFloat(totalPriceInput_{{ $purchase->id }}.value) || 0;
-                    const payment = parseFloat(paymentInput_{{ $purchase->id }}.value) || 0;
-                    dueInput_{{ $purchase->id }}.value = (total - payment).toFixed(2);
-                }
-
-                quantityInput_{{ $purchase->id }}.addEventListener('input',
-                    calculateSubAndTotal_{{ $purchase->id }});
-                unitPriceInput_{{ $purchase->id }}.addEventListener('input',
-                    calculateSubAndTotal_{{ $purchase->id }});
-
-                paymentInput_{{ $purchase->id }}.addEventListener('input', function() {
-                    manualPayment_{{ $purchase->id }} = true; // mark as manually changed
-                    calculateDue_{{ $purchase->id }}();
-                });
-
-                totalPriceInput_{{ $purchase->id }}.addEventListener('input', calculateDue_{{ $purchase->id }});
-            @endforeach
-
-        });
-    </script>
-
-
-    {{-- End***** Nayeem Script for edit --}}
-
-
-
-
-    <script>
-        $(document).ready(function() {
-            $('select[id^="edit-product_id-"]').on('change', function() {
-                let selectId = $(this).attr('id'); // e.g., edit-product_id-5
-                let purchaseId = selectId.split('-')[2]; // get 5
-
-                let productId = $(this).val();
-
-                if (productId) {
-                    let url = '{{ route('purchase.latest_price', ':id') }}';
-                    url = url.replace(':id', productId);
-
-                    $.ajax({
-                        url: url,
-                        type: 'GET',
-                        success: function(response) {
-                            $('#edit-unit_price-' + purchaseId).val(response.price);
-                        },
-                        error: function() {
-                            $('#edit-unit_price-' + purchaseId).val(0);
-                        }
-                    });
-                } else {
-                    $('#edit-unit_price-' + purchaseId).val(0);
-                }
-            });
-        });
-
-        $(document).ready(function() {
-            $('.js-example-basic-single').select2({
-                tags: true
-            });
-
-            // Initialize Select2 on product dropdown in add purchase modal
-            $('#product_id').select2({
-                placeholder: 'Select Product',
-                allowClear: true,
-                width: '100%',
-                dropdownParent: $('#add-purchase-modal')
-            });
-
-            // Initialize Select2 on edit purchase product dropdowns
-            $('select[id^="edit-product_id-"]').each(function() {
-                var $select = $(this);
-                var purchaseId = $select.attr('id').split('-')[2];
-                $select.select2({
-                    placeholder: 'Select Product',
-                    allowClear: true,
-                    width: '100%',
-                    dropdownParent: $('#edit-purchase-modal-' + purchaseId)
-                });
-            });
-
-
-        });
-    </script>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets') }}/plugins/select2/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('select').select2({
+                placeholder: function() { return $(this).data('placeholder') || 'Select'; },
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+@endpush

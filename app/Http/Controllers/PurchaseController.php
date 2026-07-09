@@ -84,7 +84,9 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        //
+        $products = Product::all();
+        $vendors = Vendor::all();
+        return view('frontend.pages.purchase.create', compact('products', 'vendors'));
     }
 
     /**
@@ -164,7 +166,10 @@ class PurchaseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $purchase = Purchase::with(['product', 'vendor'])->findOrFail($id);
+        $products = Product::all();
+        $vendors = Vendor::all();
+        return view('frontend.pages.purchase.edit', compact('purchase', 'products', 'vendors'));
     }
 
     /**
