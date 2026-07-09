@@ -1,0 +1,364 @@
+/* ============================================================
+   Custom Modern Table Design - Inoodex Inventory
+   ============================================================ */
+
+.modern-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(233, 65, 52, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(233, 65, 52, 0.07);
+  margin-bottom: 20px;
+}
+
+.modern-card .card-header:first-child {
+  border-radius: 12px 12px 0 0;
+}
+
+.modern-card .card-header {
+  background: #e94134;
+  padding: 12px 20px;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+
+.modern-card .card-header h5,
+.modern-card .card-header .card-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.modern-card .card-header .btn-outline-light {
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  background: transparent;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.modern-card .card-header .btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.modern-card .card-header .btn-outline-light i {
+  margin-right: 5px;
+  font-size: 11px;
+}
+
+.modern-card .card-body {
+  padding: 0;
+}
+
+.modern-card .filter-bar {
+  padding: 12px 18px 4px;
+  background: #fef9f8;
+  border-bottom: 1px solid #f5e6e4;
+}
+
+/* --- Table --- */
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.modern-table thead {
+  background: #fef1f0;
+  border-bottom: none;
+}
+
+.modern-table thead tr th {
+  padding: 12px 22px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #c62828;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-bottom: 2px solid #f5c6c2;
+  border-top: none;
+  white-space: nowrap;
+  background: transparent;
+  text-align: left;
+}
+
+.modern-table thead tr th:first-child {
+  width: 40px;
+  text-align: center;
+}
+
+.modern-table thead tr th:last-child {
+  width: 50px;
+  text-align: center;
+}
+
+.modern-table tbody tr {
+  transition: background 0.12s;
+}
+
+.modern-table tbody tr:nth-child(even) {
+  background: #fef9f8;
+}
+
+.modern-table tbody tr:hover {
+  background: #fdecea;
+}
+
+.modern-table tbody tr td {
+  padding: 12px 22px;
+  font-size: 13px;
+  color: #333;
+  border-bottom: 1px solid #f5e6e4;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.modern-table tbody tr td:first-child {
+  width: 40px;
+  text-align: center;
+  font-weight: 500;
+  color: #777;
+}
+
+.modern-table tbody tr td:last-child {
+  width: 50px;
+  text-align: center;
+}
+
+.modern-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.modern-table .t-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1.5px solid #f5e6e4;
+  padding: 2px;
+  background: #fff;
+}
+
+/* --- Status Badges --- */
+.modern-table .badge-status {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+
+.modern-table .badge-status.active,
+.modern-table .badge-status.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.modern-table .badge-status.inactive,
+.modern-table .badge-status.danger {
+  background: #fbe9e7;
+  color: #c62828;
+}
+
+.modern-table .badge-status.pending,
+.modern-table .badge-status.warning {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.modern-table .badge-status.info {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+/* --- Action Dropdown (3 dots centered) --- */
+.modern-table .dropdown-action {
+  display: inline-flex;
+}
+
+.modern-table .dropdown-action .btn-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: transparent;
+  color: #888;
+  border: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.modern-table .dropdown-action .btn-action-icon:hover {
+  background: #fce4e3;
+  color: #e94134;
+}
+
+.modern-table .dropdown-action .dropdown-menu {
+  border: 1px solid #f5c6c2;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(233, 65, 52, 0.1);
+  padding: 5px;
+  min-width: 140px;
+}
+
+.modern-table .dropdown-action .dropdown-menu .dropdown-item {
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #444;
+  transition: all 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modern-table .dropdown-action .dropdown-menu .dropdown-item:hover {
+  background: #fef1f0;
+  color: #e94134;
+}
+
+.modern-table .dropdown-action .dropdown-menu .dropdown-item i {
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+  color: #e8837a;
+}
+
+.modern-table .dropdown-action .dropdown-menu .dropdown-item.text-danger:hover {
+  background: #fbe9e7;
+  color: #c62828;
+}
+
+/* --- Pagination --- */
+.modern-pagination {
+  padding: 12px 18px;
+  background: #fef9f8;
+  border-top: 1px solid #f5e6e4;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modern-pagination .pagination {
+  margin: 0;
+}
+
+.modern-pagination .pagination .page-item .page-link {
+  border: 1.5px solid #f5c6c2;
+  color: #e94134;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  margin: 0 2px;
+  transition: all 0.2s;
+  background: #fff;
+}
+
+.modern-pagination .pagination .page-item .page-link:hover {
+  background: #fef1f0;
+  border-color: #e8837a;
+}
+
+.modern-pagination .pagination .page-item.active .page-link {
+  background: #e94134;
+  border-color: #e94134;
+  color: #fff;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1366px) {
+  .modern-table thead tr th,
+  .modern-table tbody tr td {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  .modern-table thead tr th:first-child,
+  .modern-table tbody tr td:first-child {
+    width: 35px;
+  }
+
+  .modern-table thead tr th:last-child,
+  .modern-table tbody tr td:last-child {
+    width: 45px;
+  }
+
+  .modern-table .t-img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .modern-card .card-header {
+    padding: 10px 16px;
+  }
+
+  .modern-card .card-header h5 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .modern-table thead tr th,
+  .modern-table tbody tr td {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .modern-table .t-img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* --- Dark Mode --- */
+[data-layout-mode="dark"] body .modern-card {
+  background: #1a1a2e;
+  border-color: #2d2d4a;
+}
+
+[data-layout-mode="dark"] body .modern-card .card-header {
+  background: #c62828;
+}
+
+[data-layout-mode="dark"] body .modern-table thead {
+  background: #2d1514;
+}
+
+[data-layout-mode="dark"] body .modern-table thead tr th {
+  color: #ef9a9a;
+  border-bottom-color: #4a2523;
+}
+
+[data-layout-mode="dark"] body .modern-table tbody tr:nth-child(even) {
+  background: #1e1414;
+}
+
+[data-layout-mode="dark"] body .modern-table tbody tr:hover {
+  background: #2a1a19;
+}
+
+[data-layout-mode="dark"] body .modern-table tbody tr td {
+  color: #ddd;
+  border-bottom-color: #3a201e;
+}
+
+[data-layout-mode="dark"] body .modern-pagination {
+  background: #1e1414;
+  border-top-color: #3a201e;
+}

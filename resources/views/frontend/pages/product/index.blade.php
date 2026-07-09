@@ -1,158 +1,64 @@
 @extends('frontend.layouts.app')
 @section('content')
     <link href="{{ asset('assets') }}/plugins/select2/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container--default .select2-selection--single .select2-selection__arrow b {
-            border-width: 0 !important;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        #productTable {
-            width: auto;
-            /* shrink to content width */
-            min-width: 300px;
-            /* minimum decent size */
-            margin: 0 auto;
-            /* center in the card */
-            font-size: 0.92rem;
-        }
-
-        #productTable th,
-        #productTable td {
-            vertical-align: middle;
-            padding: 10px 20px;
-            text-align: center !important;
-        }
-
-        #productTable td a {
-            display: block;
-            text-align: center !important;
-        }
-
-        #productTable th:nth-child(1),
-        #productTable td:nth-child(1) {
-            text-align: fight !important;
-            /* # column centered */
-            padding: 10px 20px;
-            width: 300px;
-            min-width: 200px;
-        }
-
-        #productTable thead tr th:first-child,
-        #productTable tbody tr td:first-child {
-            text-align: center !important;
-        }
-
-        /* Allow product name to wrap if needed */
-        #productTable td:nth-child(3) {
-            white-space: normal;
-            word-break: break-word;
-            text-align: center;
-        }
-
-        @media (max-width: 1366px) {
-            #productTable {
-                font-size: 0.78rem;
-            }
-
-            #productTable th,
-            #productTable td {
-                padding: 5px 6px;
-            }
-        }
-
-        @media (max-width: 1280px) {
-            #productTable {
-                font-size: 0.75rem;
-            }
-        }
-
-        .table-responsive::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .table-responsive::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .table-responsive::-webkit-scrollbar-thumb {
-            background: #aaa;
-            border-radius: 4px;
-        }
-    </style>
     <div class="content container-fluid">
-        <div class="page-header">
-            <div class="content-page-header">
-                <div class="list-btn">
-                    <div class="card mb-3 p-3">
-                        <form method="GET" action="{{ route('products.index') }}">
-                            <div class="row g-2">
-                                <!-- Search -->
-                                <div class="col-md-3">
-                                    <input type="text" name="search" class="form-control"
-                                        placeholder="Search by Product Name" value="{{ request('search') }}">
-                                </div>
-
-                                <!-- Category Filter -->
-                                <div class="col-md-2">
-                                    <select name="category_id" class="form-select">
-                                        <option value="">All Categories</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}"
-                                                {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                                {{ $category->category_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <!-- Brand Filter -->
-                                <div class="col-md-3">
-                                    <select name="brand_id" class="form-select">
-                                        <option value="">All Brands</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}"
-                                                {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
-                                                {{ $brand->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <!-- Status Filter -->
-                                <div class="col-md-2">
-                                    <select name="status" class="form-select">
-                                        <option value="">All Status</option>
-                                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active
-                                        </option>
-                                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactive
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <!-- Filter + Reset -->
-                                <div class="col-md-1">
-                                    <button type="submit" class="btn btn-primary w-100">Filter</button>
-                                </div>
-                                <div class="col-md-1">
-                                    <a href="{{ route('products.index') }}" class="btn btn-secondary w-100">Reset</a>
-                                </div>
-                            </div>
-                        </form>
+        <div class="modern-card mb-3">
+            <div class="card-body p-3">
+                <form method="GET" action="{{ route('products.index') }}">
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <input type="text" name="search" class="form-control"
+                                placeholder="Search by Product Name" value="{{ request('search') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <select name="category_id" class="form-select">
+                                <option value="">All Categories</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->category_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="brand_id" class="form-select">
+                                <option value="">All Brands</option>
+                                @foreach ($brands as $brand)
+                                    <option value="{{ $brand->id }}"
+                                        {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                                        {{ $brand->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="status" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active
+                                </option>
+                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactive
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ route('products.index') }}" class="btn btn-secondary w-100">Reset</a>
+                        </div>
                     </div>
+                </form>
+            </div>
+        </div>
 
 
                     <div id="add-payment-modal" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header cat-head">
-                                    <h5 class="modal-title" id="add-payment-modal">Add Product</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                <div class="modal-header" style="background: #e94134; color: #fff;">
+                                    <h5 class="modal-title" id="add-payment-modal" style="color: #fff;">Add Product</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -180,7 +86,7 @@
                                                 placeholder="Enter product name" value="{{ old('name') }}" required>
                                         </div>
 
-                                        <div class="col-md-6 col-lg-6">
+                                        <div class="col-md-12 col-lg-12">
                                             <label for="category_image" class="form-label fw-semibold">Product Image</label>
                                             <input type="file" class="form-control" id="product_image"
                                                 name="product_image" accept="image/*">
@@ -217,49 +123,31 @@
 
 
                                         <div class="mb-3">
-                                            <button type="submit" class="btn create-btn">Submit</button>
+                                            <button type="submit" class="btn btn-light">Submit</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                </div>
-            </div>
-        </div>
         <!-- /Page Header -->
-        <!-- Search Filter -->
         <div class="row">
             <div class="col-sm-12">
-                <div class="card shadow">
-                    <div class="card-header cat-head d-flex  justify-content-between align-items-center">
-                        <h5 class="card-title mb-0  fw-bold">Products</h5>
-                        <a class="btn create-btn-outline" href="javascript:void(0)" data-bs-toggle="modal"
+                <div class="modern-card">
+                    <div class="card-header">
+                        <h5>Products</h5>
+                        <a class="btn btn-light btn-sm text-dark float-end" href="javascript:void(0)" data-bs-toggle="modal"
                             data-bs-target="#add-payment-modal">
-                            <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Product </a>
+                            <i class="fa fa-plus-circle"></i> Add Product </a>
                     </div>
 
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="productTable" class="table table-hover">
-                                <thead class="thead-light">
+                            <table id="productTable" class="modern-table">
+                                <thead>
                                     <tr>
-                                        <th style="width: 10%;">#</th>
-                                        <th>Brand Name
-                                            <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ব্রান্ড
-                                                নাম</small>
-                                        </th>
-                                        {{-- <th style="width: 18%;">Product Name <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">প্রোডাক্ট নাম</small></th>
-        <th style="width: 12%;">Unit Price <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট প্রাইস</small></th>
-        <th style="width: 16%;">Category <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ক্যাটাগরি</small></th>
-        <th style="width: 8%;">Unit <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">ইউনিট</small></th> --}}
-                                        {{-- <th style="width: 10%;">Status
-    <small class="d-block text-muted fw-normal" style="font-size:0.7rem;">স্ট্যাটাস</small>
-</th> --}}
-                                        {{-- <th style="width: 10%;" class="no-sort">Actions <small
-                                                class="d-block text-muted fw-normal"
-                                                style="font-size:0.7rem;">একশন</small></th> --}}
+                                        <th>#</th>
+                                        <th>Brand Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -277,7 +165,7 @@
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>
                                                 @if ($product->brand)
-                                                    <a href="javascript:void(0)" class="text-decoration-none fw-semibold"
+                                                    <a href="javascript:void(0)" class="fw-semibold"
                                                         onclick="showBrandProducts({{ $product->brand_id }}, '{{ $product->brand->name }}')">
                                                         {{ $product->brand->name }}
                                                     </a>
@@ -285,48 +173,6 @@
                                                     <span class="text-muted">N/A</span>
                                                 @endif
                                             </td>
-                                            {{-- <td title="{{ $product->name }}">{{ Str::limit($product->name, 28) }}</td>
-            <td>{{ $product->latestPurchase->unit_price ?? '—' }}</td>
-            <td title="{{ $product->category->category_name ?? 'N/A' }}">
-                {{ Str::limit($product->category->category_name ?? 'N/A', 16) }}
-            </td>
-            <td>{{ $product->unit }}</td> --}}
-                                            {{-- <td>
-                                                @if ($product->status == 1)
-                                                    <span class="badge bg-success">Active</span>
-                                                @else
-                                                    <span class="badge bg-danger">Inactive</span>
-                                                @endif
-                                            </td> --}}
-                                            {{-- <td class="text-center align-middle">
-                                                <div class="dropdown dropdown-action d-inline-block">
-                                                    <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul>
-                                                            <li>
-                                                                <a class="dropdown-item" href="javascript:void(0)"
-                                                                    onclick="openEditProductModal({{ $product->id }}, {{ $product->brand_id }}, '{{ $product->name }}', '{{ $product->unit }}', {{ $product->status }}, {{ $product->category_id ?? 'null' }})">
-                                                                    <i class="far fa-edit me-2"></i>Edit
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a onclick="if (confirm('Are you sure to delete the product?')) { document.getElementById('serviceDelete{{ $product->id }}').submit(); }"
-                                                                    class="dropdown-item" href="javascript:void(0)">
-                                                                    <i class="far fa-trash-alt me-2"></i>Delete
-                                                                </a>
-                                                                <form id="serviceDelete{{ $product->id }}"
-                                                                    action="{{ route('products.destroy', $product->id) }}"
-                                                                    method="POST" style="display:none;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -342,11 +188,11 @@
 
     {{-- Brand Products Modal --}}
     <div id="brand-products-modal" class="modal fade" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header cat-head">
-                    <h5 class="modal-title" id="brand-modal-title">Brand Products</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header" style="background: #e94134; color: #fff;">
+                    <h5 class="modal-title" id="brand-modal-title" style="color: #fff;">Brand Products</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2 w-100" style="text-align: left !important;">
@@ -354,8 +200,8 @@
                         <span id="brand-selected-name" class="text-primary d-inline-block"></span>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="thead-light">
+                        <table class="modern-table">
+                            <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Product Name</th>
@@ -380,9 +226,9 @@
     <div id="edit-product-modal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header cat-head">
-                    <h5 class="modal-title">Edit Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header" style="background: #e94134; color: #fff;">
+                    <h5 class="modal-title" style="color: #fff;">Edit Product</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editProductForm" class="px-3" method="POST" action=""
@@ -427,7 +273,7 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <button type="submit" class="btn create-btn">Update</button>
+                            <button type="submit" class="btn btn-light">Update</button>
                         </div>
                     </form>
                 </div>
@@ -474,30 +320,24 @@
                             <td>${product.category_name}</td>
                             <td>${product.unit}</td>
                             <td>
-                                <span class="badge ${product.status == 1 ? 'bg-success' : 'bg-danger'}">
+                                <span class="badge-status ${product.status == 1 ? 'active' : 'inactive'}">
                                     ${product.status == 1 ? 'Active' : 'Inactive'}
                                 </span>
                             </td>
-                            <td class="text-center align-middle">
-                                <div class="dropdown dropdown-action d-inline-block">
+                            <td>
+                                <div class="dropdown dropdown-action">
                                     <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <ul>
-                                            <li>
-                                                <a class="dropdown-item" href="javascript:void(0)"
-                                                    onclick="openEditProductModalFromBrand(${product.id})">
-                                                    <i class="far fa-edit me-2"></i>Edit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="javascript:void(0)"
-                                                    onclick="deleteProductById(${product.id})">
-                                                    <i class="far fa-trash-alt me-2"></i>Delete
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                            onclick="openEditProductModalFromBrand(${product.id})">
+                                            <i class="far fa-edit"></i>Edit
+                                        </a>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0)"
+                                            onclick="deleteProductById(${product.id})">
+                                            <i class="far fa-trash-alt"></i>Delete
+                                        </a>
                                     </div>
                                 </div>
                             </td>

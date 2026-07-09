@@ -1,266 +1,98 @@
 @extends('frontend.layouts.app')
 @section('content')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
-            border-color: transparent transparent #888 transparent;
-            border-width: 0 !important;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__arrow b {
-            border-color: #888 transparent transparent transparent;
-            border-style: solid;
-            border-width: 0 !important;
-            height: 0;
-            left: 50%;
-            margin-left: -4px;
-            margin-top: -2px;
-            position: absolute;
-            top: 50%;
-            width: 0;
-        }
-    </style>
     <div class="content container-fluid">
-
-        <div class="card shadow">
-            <div class="card-header cat-head d-flex  justify-content-between align-items-center">
-
+        <div class="modern-card">
+            <div class="card-header">
                 <h5>Customer List</h5>
-
-                <div class="list-btn">
-
-                    <a class="btn create-btn-outline" href="{{ route('customers.create') }}">
-                        <i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Customer </a>
-
-
-                    <div id="add-payment-modal" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="text-center mt-2 mb-4">
-                                        <div class="auth-logo">
-                                            <a href="{{ route('index') }}" class="logo logo-dark">
-                                                <span class="logo-lg">
-                                                    <img src="{{ asset('assets/img/logo.png') }}" alt="Logo"
-                                                        height="42">
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <form class="px-3" method="post" action="{{ route('products.store') }}">
-                                        @csrf
-                                        <!-- Input for Product Name -->
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Product Name <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" name="name" id="name" class="form-control"
-                                                placeholder="Enter product name" value="{{ old('name') }}" required>
-                                        </div>
-                                        <!-- Product Model Name Input -->
-                                        <div class="mb-3">
-                                            <label for="model_name" class="form-label">Product Model Name <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" name="model_name" id="model_name" class="form-control"
-                                                placeholder="Enter product model name" value="{{ old('model_name') }}"
-                                                required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="status" class="form-label">Status</label>
-                                            <select class="form-select mb-3" name="status" required>
-                                                <option selected="" value="1">Actve</option>
-                                                <option value="0">InActve</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                <a href="{{ route('customers.create') }}" class="btn btn-light btn-sm text-dark float-end">
+                    <i class="fa fa-plus-circle"></i> Add Customer
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="card-body py-2 px-0 border-bottom">
+                    <form action="{{ route('customers.index') }}" method="GET" class="row g-2">
+                        <div class="col-md-3">
+                            <input type="text" name="name" value="{{ request('name') }}" class="form-control"
+                                placeholder="Name">
                         </div>
-                    </div>
-
-
+                        <div class="col-md-3">
+                            <input type="text" name="phone" value="{{ request('phone') }}" class="form-control"
+                                placeholder="Phone">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" name="email" value="{{ request('email') }}" class="form-control"
+                                placeholder="Email">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ route('customers.index') }}" class="btn btn-secondary w-100">Reset</a>
+                        </div>
+                    </form>
                 </div>
-
-
-            </div>
-            <!-- /Page Header -->
-            <!-- Search Filter -->
-            <div class="card mb-3 p-3">
-                <form action="{{ route('customers.index') }}" method="GET" class="row g-2 mb-3">
-                    <div class="col-md-3">
-                        <input type="text" name="name" value="{{ request('name') }}" class="form-control"
-                            placeholder="Name">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" name="phone" value="{{ request('phone') }}" class="form-control"
-                            placeholder="Phone">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" name="email" value="{{ request('email') }}" class="form-control"
-                            placeholder="Email">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Filter</button>
-                    </div>
-                    <div class="col-md-1">
-                        <a href="{{ route('customers.index') }}" class="btn btn-secondary w-100">Reset</a>
-                    </div>
-                </form>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card-table">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="productTable" class="table table-center table-hover datatable">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name (নাম)</th>
-                                            <th>Phone (ফোন)</th>
-                                            <th>Email (ইমেইল)</th>
-                                            <th>Address(এড্রেস)</th>
-                                            <th>Status (স্ট্যাটাস)</th>
-                                            <th class="no-sort">Actions (একশন)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($customers as $product)
-                                            <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $product->name }}</td>
-                                                <td>{{ $product->phone ?? 'N/A' }}</td>
-                                                <td>{{ $product->email ?? 'N/A' }}</td>
-                                                <td>{{ $product->address ?? 'N/A' }}</td>
-                                                <td>
-                                                    @if ($product->status == 1)
-                                                        <span class="badge bg-success">Active</span>
-                                                    @else
-                                                        <span class="badge bg-danger">Inactive</span>
-                                                    @endif
-                                                </td>
-                                                <td class="d-flex align-items-center">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="btn-action-icon"
-                                                            data-bs-toggle="dropdown">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <ul>
-                                                                <li>
-                                                                    <a class="dropdown-item"
-                                                                        href="{{ route('customers.edit', $product->id) }}">
-                                                                        <i class="far fa-edit me-2"></i>Edit
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a onclick="if (confirm('Are you sure to delete the product?')) { document.getElementById('serviceDelete{{ $product->id }}').submit(); }"
-                                                                        class="dropdown-item" href="javascript:void(0)">
-                                                                        <i class="far fa-trash-alt me-2"></i>Delete
-                                                                    </a>
-                                                                    <form id="serviceDelete{{ $product->id }}"
-                                                                        action="{{ route('customers.destroy', $product->id) }}"
-                                                                        method="POST" style="display:none;">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                    </form>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                                <!-- Pagination Links -->
-                                <div class="d-flex justify-content-center mt-4 pb-4">
-                                    {{ $customers->links('pagination::bootstrap-5') }}
-                                </div>
-
-                                <!-- Modals should be outside the table -->
-                                @foreach ($customers as $product)
-                                    <div id="edit-product-modal{{ $product->id }}" class="modal fade" tabindex="-1"
-                                        aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-body">
-                                                    <div class="text-center mt-2 mb-4">
-                                                        <div class="auth-logo">
-                                                            <a href="{{ route('index') }}" class="logo logo-dark">
-                                                                <span class="logo-lg">
-                                                                    <img src="{{ asset('assets/img/logo.png') }}"
-                                                                        alt="Logo" height="42">
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <form class="px-3" method="POST"
-                                                        action="{{ route('products.update', $product->id) }}">
-                                                        @csrf
-                                                        @method('PUT')
-
-                                                        <!-- Product Name -->
-                                                        <div class="mb-3">
-                                                            <label for="name{{ $product->id }}"
-                                                                class="form-label">Product Name
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="text" name="name"
-                                                                id="name{{ $product->id }}" class="form-control"
-                                                                placeholder="Enter product name"
-                                                                value="{{ old('name', $product->name) }}" required>
-                                                        </div>
-
-                                                        <!-- Product Model Name -->
-                                                        <div class="mb-3">
-                                                            <label for="model_name{{ $product->id }}"
-                                                                class="form-label">Product
-                                                                Model Name <span class="text-danger">*</span></label>
-                                                            <input type="text" name="model_name"
-                                                                id="model_name{{ $product->id }}" class="form-control"
-                                                                placeholder="Enter product model name"
-                                                                value="{{ old('model_name', $product->model ?? '') }}"
-                                                                required>
-                                                        </div>
-
-                                                        <!-- Status -->
-                                                        <div class="mb-3">
-                                                            <label for="status{{ $product->id }}"
-                                                                class="form-label">Status</label>
-                                                            <select class="form-select mb-3" name="status"
-                                                                id="status{{ $product->id }}" required>
-                                                                <option value="1"
-                                                                    {{ old('status', $product->status) == 1 ? 'selected' : '' }}>
-                                                                    Active</option>
-                                                                <option value="0"
-                                                                    {{ old('status', $product->status) == 0 ? 'selected' : '' }}>
-                                                                    Inactive</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="mb-3">
-                                                            <button type="submit" class="btn btn-primary">Update</button>
-                                                        </div>
-                                                    </form>
-
-                                                </div>
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name (নাম)</th>
+                                <th>Phone (ফোন)</th>
+                                <th>Email (ইমেইল)</th>
+                                <th>Address (এড্রেস)</th>
+                                <th>Status (স্ট্যাটাস)</th>
+                                <th>Action (একশন)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($customers as $product)
+                                <tr>
+                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->phone ?? 'N/A' }}</td>
+                                    <td>{{ $product->email ?? 'N/A' }}</td>
+                                    <td>{{ $product->address ?? 'N/A' }}</td>
+                                    <td>
+                                        @if ($product->status == 1)
+                                            <span class="badge-status active">Active</span>
+                                        @else
+                                            <span class="badge-status inactive">Inactive</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="{{ route('customers.edit', $product->id) }}">
+                                                    <i class="far fa-edit"></i>Edit
+                                                </a>
+                                                <a onclick="if (confirm('Are you sure to delete this customer?')) { document.getElementById('deleteCustomer{{ $product->id }}').submit(); }"
+                                                    class="dropdown-item text-danger" href="javascript:void(0)">
+                                                    <i class="far fa-trash-alt"></i>Delete
+                                                </a>
+                                                <form id="deleteCustomer{{ $product->id }}"
+                                                    action="{{ route('customers.destroy', $product->id) }}"
+                                                    method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-                            </div>
+                    @if ($customers->hasPages())
+                        <div class="modern-pagination">
+                            {{ $customers->links('pagination::bootstrap-5') }}
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endsection

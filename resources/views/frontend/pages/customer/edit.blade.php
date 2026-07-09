@@ -1,18 +1,15 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-
-<div class="row">
-    <div class="col-md-6 mx-auto mt-4">
+    <div class="content container-fluid">
         <div class="row justify-content-center">
-            <div class="col">
-                <div class="card shadow">
-                    <div class="card-header cat-head">
-                        <h2 class=" mb-3">Add Customers</h2>
+            <div class="col-md-6 mx-auto">
+                <div class="modern-card">
+                    <div class="card-header">
+                        <h5>Edit Customer</h5>
+                        <a href="{{ route('customers.index') }}" class="btn btn-light btn-sm text-dark float-end">Back</a>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-4">
                         <form method="POST" action="{{ route('customers.update', $customer->id) }}">
                             @csrf
                             @method('PUT')
@@ -27,13 +24,11 @@
                                                 value="{{$customer->name}}" required>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row align-items-center mb-2">
                                         <div class="col-sm-3">
                                             <label for="phone" class="form-label">Phone</label>
-
                                         </div>
                                         <div class="col-sm-9">
                                             <input type="tel" class="form-control" name="phone" id="phone"
@@ -41,7 +36,6 @@
                                                 placeholder="Enter phone number" required>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col-12">
                                     <div class="row align-items-center mb-2">
@@ -53,7 +47,6 @@
                                                 value="{{$customer->email}}" id="email">
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col-12">
                                     <div class="row align-items-center mb-2">
@@ -65,12 +58,10 @@
                                                 required>{{$customer->address}}</textarea>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-
-                            <div class="add-customer-btns text-left">
-                                <button type="submit" class="btn create-btn">Submit</button>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-light px-4">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -78,21 +69,4 @@
             </div>
         </div>
     </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-$(document).ready(function() {
-
-    $('.js-example-basic-single').select2({
-
-    });
-
-    $('.js-example-basic-single-no-new-value').select2({});
-
-
-});
-</script>
-
 @endsection

@@ -51,6 +51,9 @@
 
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="{{asset('assets')}}/css/style.css">
+
+		<!-- Custom Table Design -->
+		<link rel="stylesheet" href="{{asset('assets')}}/css/custom-table.css">
 		
 		<!-- Layout JS -->
 		<script src="{{asset('assets')}}/js/layout.js" type="19fcc0aa7d222f8686a0e100-text/javascript"></script>
