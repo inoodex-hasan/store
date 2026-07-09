@@ -61,28 +61,28 @@ class ExpenseController extends Controller
         }
 
         // Select what we need
-        $dailyExpense = $query
-            ->select(
-                'daily_expenses.*',
-                'expense_categories.name as category_name'
-            )
-            ->orderBy('daily_expenses.id', 'desc')
-            ->get();
+        $selectCols = [
+            'daily_expenses.*',
+            'expense_categories.name as category_name'
+        ];
 
-        // Pull only the active categories for the filter dropdown
-        $categories = ExpenseCategory::where('status', 1)->orderBy('name')->get();
-
-        // PDF export shortcut
+        // PDF export: get all matching records (no pagination)
         if ($request->search_for === 'pdf') {
-              $pdf = Pdf::loadView('pdf.daily_expense', compact('dailyExpense', 'request', 'categories'))
-            ->setPaper('A4', 'portrait'); // Optional: change size/orientation
-
+            $dailyExpense = (clone $query)->select($selectCols)->orderBy('daily_expenses.id', 'desc')->get();
+            $categories = ExpenseCategory::where('status', 1)->orderBy('name')->get();
+            $pdf = Pdf::loadView('pdf.daily_expense', compact('dailyExpense', 'request', 'categories'))
+                ->setPaper('A4', 'portrait');
             return $pdf->download('daily_expense.pdf');
         }
 
-        // Render index view
-        
-        return view('frontend.pages.expense.index', compact('dailyExpense','request','categories'));
+        $dailyExpense = $query
+            ->select($selectCols)
+            ->orderBy('daily_expenses.id', 'desc')
+            ->paginate(15)->withQueryString();
+
+        $categories = ExpenseCategory::where('status', 1)->orderBy('name')->get();
+
+        return view('frontend.pages.expense.index', compact('dailyExpense', 'request', 'categories'));
     }
 
 

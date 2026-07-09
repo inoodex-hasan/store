@@ -1,155 +1,64 @@
 @extends('frontend.layouts.app')
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-<style>
-.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
-    border-color: transparent transparent #888 transparent;
-    border-width: 0 !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow b {
-    border-color: #888 transparent transparent transparent;
-    border-style: solid;
-    border-width: 0 !important;
-    height: 0;
-    left: 50%;
-    margin-left: -4px;
-    margin-top: -2px;
-    position: absolute;
-    top: 50%;
-    width: 0;
-}
-</style>
-
-<div class="content container-fluid">
-    <div class="row mt-4">
-        <div class="col-lg-6 mx-auto">
-
-            <div class="card shadow">
-                <div class="card-header cat-head d-flex justify-content-between alignn-align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1 fw-bold">Edit Daily Expense</h5>
-
-                </div>
-                <div class="card-body">
-
-
-
-                    <form action="{{ route('dailyExpenses.update', $expense->id) }}" method="post">
-                        @csrf @method('PUT')
-                        <div class="row g-3">
-
-                            <!-- Date -->
-                            <div class="col-md-12">
-                                <div class="row mb-3 align-items-center">
-                                    <div class="col-sm-3">
-                                        <label class="form-label">Date <span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <input type="date" name="date" class="form-control"
-                                            value="{{ old('date', $expense->date) }}" required>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <!-- Expense Category -->
-                            <div class="col-md-12">
-                                <div class="row mb-2 align-items-center">
-                                    <div class="col-sm-3">
-                                        <label class="form-label">Expense Category <span
-                                                class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select name="expense_category_id" class="form-select " required>
-                                            <option value="">-- Select --</option>
-                                            @foreach($categories as $cat)
-                                            <option value="{{ $cat->id }}"
-                                                {{ old('expense_category_id', $expense->expense_category_id)==$cat->id ? 'selected':'' }}>
-                                                {{ $cat->name }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <!-- Amount -->
-                            <div class="col-md-12">
-                                <div class="row mb-2 align-items-center">
-                                    <div class="col-sm-3">
-                                        <label class="form-label">Amount <span class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <input type="number" step="0.01" name="amount" class="form-control" ]
-                                            value="{{ old('amount', $expense->amount) }}" required>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <!-- Spend Method -->
-                            <div class="col-md-12">
-                                <div class="row mb-2 align-items-center">
-                                    <div class="col-sm-3">
-                                        <label class="form-label">Spend Method <span
-                                                class="text-danger">*</span></label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <select name="spend_method" class="form-select" required>
-                                            <option value="">-- Select --</option>
-                                            <option value="cash"
-                                                {{ $expense->spend_method=='cash'         ? 'selected':'' }}>Cash
-                                            </option>
-                                            <option value="card"
-                                                {{ $expense->spend_method=='card'         ? 'selected':'' }}>Card
-                                            </option>
-                                            <option value="bank_transfer"
-                                                {{ $expense->spend_method=='bank_transfer'? 'selected':'' }}>Bank
-                                                Transfer</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-
-                            <!-- Remarks -->
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <label class="form-label">Remarks</label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <textarea name="remarks" class="form-control" rows="3"
-                                            placeholder="Enter remarks (optional)">{{ old('remarks', $expense->remarks) }}</textarea>
-                                    </div>
-                                </div>
-
-                            </div>
-
+    <div class="content container-fluid">
+        @include('layouts.flash-message')
+        @if ($errors->any())
+            <div class="alert alert-danger" id="validation-error-alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <script>setTimeout(function(){var e=document.getElementById('validation-error-alert');if(e)e.style.display='none';},3000);</script>
+        @endif
+        <div class="modern-card">
+            <div class="card-header">
+                <h5>Edit Daily Expense</h5>
+                <a href="{{ route('dailyExpenses.index') }}" class="btn btn-light btn-sm text-dark">Back to List</a>
+            </div>
+            <div class="card-body p-3">
+                <form action="{{ route('dailyExpenses.update', $expense->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Date <span class="text-danger">*</span></label>
+                            <input type="date" name="date" class="form-control" value="{{ old('date', $expense->date) }}" required>
                         </div>
-
-                        <div class="mt-3 text-start">
-                            <button type="submit" class="btn create-btn">Update</button>
+                        <div class="col-md-6">
+                            <label class="form-label">Expense Category <span class="text-danger">*</span></label>
+                            <select name="expense_category_id" class="form-select" required>
+                                <option value="">-- Select --</option>
+                                @foreach ($categories as $cat)
+                                    <option value="{{ $cat->id }}" {{ old('expense_category_id', $expense->expense_category_id) == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </form>
-
-                </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Amount <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" name="amount" class="form-control" value="{{ old('amount', $expense->amount) }}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Spend Method <span class="text-danger">*</span></label>
+                            <select name="spend_method" class="form-select" required>
+                                <option value="">-- Select --</option>
+                                <option value="cash" {{ old('spend_method', $expense->spend_method) == 'cash' ? 'selected' : '' }}>Cash</option>
+                                <option value="card" {{ old('spend_method', $expense->spend_method) == 'card' ? 'selected' : '' }}>Card</option>
+                                <option value="bank_transfer" {{ old('spend_method', $expense->spend_method) == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Remarks</label>
+                            <textarea name="remarks" class="form-control" rows="1" placeholder="Enter remarks">{{ old('remarks', $expense->remarks) }}</textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                            <a href="{{ route('dailyExpenses.index') }}" class="btn btn-secondary btn-sm">Cancel</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('.js-example-basic-single').select2({
-        width: '100%'
-    });
-});
-</script>
 @endsection
