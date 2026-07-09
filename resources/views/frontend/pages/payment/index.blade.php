@@ -1,142 +1,97 @@
 @extends('frontend.layouts.app')
-
 @section('content')
-    <div class="container mt-4">
-        <div class="card shadow">
-            <div class="card-header cat-head">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5>Payments List</h5>
-                    <a href="{{ route('payments.create') }}" class="btn create-btn-outline">Add New Payment</a>
-                </div>
-
-                <div class="card mb-3 p-3">
+    <div class="content container-fluid">
+        @include('layouts.flash-message')
+        <div class="modern-card">
+            <div class="card-header">
+                <h5>Payment List</h5>
+                <a href="{{ route('payments.create') }}" class="btn btn-light btn-sm text-dark"><i class="fa fa-plus-circle"></i> Add New Payment</a>
+            </div>
+            <div class="card-body">
+                <div class="filter-bar">
                     <form action="{{ route('payments.index') }}" method="GET" class="row g-2">
-
-
-
-                        <!-- Sale -->
-                        {{-- <div class="col-md-2">
-                            <select name="sale_id" class="form-select">
-                                <option value="">All Sales</option>
-                                @foreach ($sales as $sale)
-                                    <option value="{{ $sale->id }}"
-                                        {{ request('sale_id') == $sale->id ? 'selected' : '' }}>
-                                        {{ $sale->id }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-
-                        <div class="col-md-2">
-                            <input type="text" name="customer_name" value="{{ request('customer_name') }}"
-                                class="form-control" placeholder="Search customer by name">
+                        <div class="col-md-3 p-1">
+                            <input type="text" name="customer_name" value="{{ request('customer_name') }}" class="form-control form-control-sm" placeholder="Search customer by name">
                         </div>
-
-                        {{-- <!-- Customer -->
-                        <div class="col-md-2">
-                            <select name="customer_id" class="form-select">
-                                <option value="">All Customers</option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}"
-                                        {{ request('customer_id') == $customer->id ? 'selected' : '' }}>
-                                        {{ $customer->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-
-                        <!-- Amount -->
-                        <div class="col-md-2">
-                            <input type="number" name="amount" value="{{ request('amount') }}" class="form-control"
-                                placeholder="Amount">
+                        <div class="col-md-2 p-1">
+                            <input type="number" name="amount" value="{{ request('amount') }}" class="form-control form-control-sm" placeholder="Amount">
                         </div>
-
-                        <!-- Payment Date -->
-                        <div class="col-md-2">
-                            <input type="date" name="payment_date" value="{{ request('payment_date') }}"
-                                class="form-control">
+                        <div class="col-md-2 p-1">
+                            <input type="date" name="payment_date" value="{{ request('payment_date') }}" class="form-control form-control-sm">
                         </div>
-
-                        <!-- Payment Method -->
-                        <div class="col-md-2">
-                            <select name="payment_method" class="form-select">
+                        <div class="col-md-2 p-1">
+                            <select name="payment_method" class="form-select form-select-sm">
                                 <option value="">All Methods</option>
                                 @foreach ($methods as $method)
-                                    <option value="{{ $method }}"
-                                        {{ request('payment_method') == $method ? 'selected' : '' }}>
-                                        {{ $method }}
-                                    </option>
+                                    <option value="{{ $method }}" {{ request('payment_method') == $method ? 'selected' : '' }}>{{ $method }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <!-- Filter Button First -->
-                        <div class="col-md-2 d-flex align-items-center">
-                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        <div class="col-md-3 d-flex align-items-center gap-1">
+                            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                            <a href="{{ route('payments.index') }}" class="btn btn-secondary btn-sm">Reset</a>
                         </div>
-
-                        <!-- Reset Button Last -->
-                        <div class="col-md-2 d-flex align-items-center">
-                            <a href="{{ route('payments.index') }}" class="btn btn-secondary w-100">Reset</a>
-                        </div>
-
                     </form>
                 </div>
 
-
-                @if (session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
-
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>#</th>
-                            <th>Sale ID (সেল আইডি)</th>
-                            <th>Customer ID (কাস্টমার আইডি)</th>
-                            <th>Amount (এমাউন্ট)</th>
-                            <th>Payment Date (পেমেন্ট তারিখ)</th>
-                            <th>Method (মেথড)</th>
-                            <th>Action (একশন)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($payments as $payment)
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
                             <tr>
-                                <td>{{ $payment->id }}</td>
-                                <td>{{ $payment->sale_id }}</td>
-                                <td>{{ $payment->customer->name }}</td>
-                                <td>{{ number_format($payment->amount, 2) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>
-                                <td>{{ $payment->payment_method ?? 'N/A' }}</td>
-                                <td>
-                                    <a href="{{ route('payments.edit', $payment->id) }}"
-                                        class="btn create-btn text-light"><i class="fa-solid fa-pen-to-square"></i></a>
-                                    {{-- <a href="{{ route('payments.show', $payment->id) }}" class="btn btn-sm btn-success">Show</a> --}}
-
-                                    <form action="{{ route('payments.destroy', $payment->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this payment?')"><i
-                                                class="fa-solid fa-trash"></i></button>
-                                    </form>
-                                </td>
+                                <th>#</th>
+                                <th>Sale ID (সেল আইডি)</th>
+                                <th>Customer (কাস্টমার)</th>
+                                <th>Amount (এমাউন্ট)</th>
+                                <th>Payment Date (পেমেন্ট তারিখ)</th>
+                                <th>Method (মেথড)</th>
+                                <th>Action (একশন)</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center">No payments found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-
-                <!-- Pagination Links -->
-
-                <div class="d-flex justify-content-end mt-4">
-                    {!! $payments->links('pagination::bootstrap-5') !!}
+                        </thead>
+                        <tbody>
+                            @forelse($payments as $payment)
+                                <tr>
+                                    <td>{{ $payment->id }}</td>
+                                    <td>{{ $payment->sale_id }}</td>
+                                    <td>{{ $payment->customer->name ?? 'N/A' }}</td>
+                                    <td>{{ number_format($payment->amount, 2) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>
+                                    <td>{{ $payment->payment_method ?? 'N/A' }}</td>
+                                    <td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="{{ route('payments.edit', $payment->id) }}"><i class="far fa-edit"></i> Edit</a>
+                                                <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="deletePayment({{ $payment->id }})"><i class="far fa-trash-alt"></i> Delete</a>
+                                                <form id="del{{ $payment->id }}" method="POST" action="{{ route('payments.destroy', $payment->id) }}" style="display:none">@csrf @method('DELETE')</form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">No payments found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
+
+                @if ($payments->hasPages())
+                    <div class="modern-pagination">
+                        {{ $payments->links('pagination::bootstrap-5') }}
+                    </div>
+                @endif
             </div>
-        @endsection
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    <script>
+        function deletePayment(id) {
+            if (confirm('Are you sure you want to delete this payment?')) {
+                document.getElementById('del' + id).submit();
+            }
+        }
+    </script>
+@endpush
