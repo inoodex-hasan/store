@@ -15,7 +15,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $users = Role::get();
+        $users = Role::with('permissions')->get();
         return view('frontend.pages.role.index', compact('users'));
     }
 
