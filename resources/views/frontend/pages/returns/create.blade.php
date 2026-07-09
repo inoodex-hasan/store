@@ -2,29 +2,26 @@
 
 @section('content')
     <div class="content container-fluid">
-        <div class="page-header">
-            <div class="content-page-header">
-                <h5 class="card-title fw-bold">Create Product Return</h5>
+        <div class="modern-card">
+            <div class="card-header">
+                <h5>Create Product Return</h5>
+                <a href="{{ route('returns.index') }}" class="btn btn-light btn-sm text-dark float-end">
+                     Back to List
+                </a>
             </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
+            <div class="card-body p-3">
                 <form method="POST" action="{{ route('returns.store') }}" id="returnForm">
                     @csrf
 
-                    <!-- Sale Selection -->
-                    <div class="row mb-4">
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Select Sale (Order) <span class="text-danger">*</span></label>
-                            <select name="sale_id" id="saleSelect" class="form-select select2" required>
+                            <select name="sale_id" id="saleSelect" class="form-select" required>
                                 <option value="">-- Select Sale --</option>
                                 @foreach($sales as $s)
                                     <option value="{{ $s->id }}" {{ request('sale_id') == $s->id ? 'selected' : '' }}
                                         data-customer="{{ $s->customer_id }}">
-                                        #{{ $s->order_no }} 
-                                        - {{ $s->customer->name ?? 'No Customer' }}
-                                        <!-- - ({{ $s->created_at->format('d M Y') }}) -->
+                                        #{{ $s->order_no }} - {{ $s->customer->name ?? 'No Customer' }}
                                     </option>
                                 @endforeach
                             </select>
@@ -35,12 +32,11 @@
                         </div>
                     </div>
 
-                    <!-- Sale Items Display -->
-                    <div id="saleItemsSection" class="mb-4 {{ $sale ? '' : 'd-none' }}">
-                        <h6 class="fw-bold mb-3">Sale Items</h6>
+                    <div id="saleItemsSection" class="mb-3 {{ $sale ? '' : 'd-none' }}">
+                        <h6 class="fw-bold mb-2">Sale Items</h6>
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
-                                <thead class="table-light">
+                            <table class="modern-table" style="border: 1px solid #f5e6e4;">
+                                <thead>
                                     <tr>
                                         <th>Product</th>
                                         <th>Sold Qty</th>
@@ -49,7 +45,7 @@
                                         <th>Return Reason</th>
                                         <th>Condition</th>
                                         <th>Notes</th>
-                                        <th>Action</th>
+                                        <th style="width:40px"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="saleItemsTable">
@@ -63,7 +59,7 @@
                                                 <td>{{ $item->quantity }}</td>
                                                 <td>
                                                     <input type="number" name="items[{{ $loop->index }}][quantity]"
-                                                        class="form-control form-control-sm qty-input" min="1" max="{{ $item->quantity }}"
+                                                        class="form-control form-control-sm qty-input" min="0" max="{{ $item->quantity }}"
                                                         value="0" style="width: 80px;">
                                                 </td>
                                                 <td>
@@ -102,35 +98,33 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="alert alert-info" id="noItemsMessage" style="display: {{ $sale && $saleItems->count() > 0 ? 'none' : 'block' }}">
+                        <div class="alert alert-info mt-2 py-2 small" id="noItemsMessage"
+                            style="display: {{ $sale && $saleItems->count() > 0 ? 'none' : 'block' }}">
                             Select a sale to view items
                         </div>
                     </div>
 
-                    <!-- Return Reason (General) -->
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label class="form-label">General Return Reason / Notes</label>
-                        <textarea name="reason" class="form-control" rows="3" placeholder="Enter general reason for return"></textarea>
+                        <textarea name="reason" class="form-control" rows="2" placeholder="Enter general reason for return"></textarea>
                     </div>
 
-                    <!-- Total Summary -->
-                    <div class="card bg-light mb-4">
-                        <div class="card-body">
-                            <div class="row">
+                    <div class="modern-card mb-3" style="background: #fef9f8;">
+                        <div class="card-body p-3">
+                            <div class="row align-items-center">
                                 <div class="col-md-6">
                                     <h6 class="mb-0">Total Refund Amount:</h6>
                                 </div>
                                 <div class="col-md-6 text-end">
-                                    <h4 class="mb-0 text-primary" id="totalRefund">0.00</h4>
+                                    <h4 class="mb-0" style="color: #e94134;" id="totalRefund">0.00</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Submit Buttons -->
                     <div class="d-flex gap-2 justify-content-end">
-                        <a href="{{ route('returns.index') }}" class="btn btn-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
+                        <a href="{{ route('returns.index') }}" class="btn btn-secondary btn-sm">Cancel</a>
+                        <button type="submit" class="btn btn-primary btn-sm">
                             Create Return
                         </button>
                     </div>
@@ -149,7 +143,6 @@
         const noItemsMessage = document.getElementById('noItemsMessage');
         const totalRefundEl = document.getElementById('totalRefund');
 
-        // Calculate total refund
         function calculateTotal() {
             let total = 0;
             document.querySelectorAll('#saleItemsTable tr').forEach(row => {
@@ -162,90 +155,50 @@
             totalRefundEl.textContent = total.toFixed(2);
         }
 
-        // Listen for quantity changes
         document.addEventListener('input', function(e) {
             if (e.target.classList.contains('qty-input')) {
                 calculateTotal();
             }
         });
 
-        // Handle sale selection
         function handleSaleChange() {
             const saleId = saleSelect.value;
-            console.log('Sale selected:', saleId);
-
             if (!saleId) {
                 saleItemsSection.classList.add('d-none');
                 return;
             }
-
-            // Show loading state
             saleItemsTable.innerHTML = '<tr><td colspan="8" class="text-center">Loading...</td></tr>';
             saleItemsSection.classList.remove('d-none');
-
-            // Get CSRF token
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-
-            // Fetch sale items via AJAX
             fetch(`/returns/sale-items/${saleId}`, {
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json'
-                }
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' }
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.status);
-                    }
-                    return response.json();
-                })
+                .then(r => { if (!r.ok) throw new Error('Status: ' + r.status); return r.json(); })
                 .then(data => {
-                    console.log('Sale items loaded:', data);
                     if (data.items && data.items.length > 0) {
                         let html = '';
                         data.items.forEach((item, index) => {
                             html += `
                                 <tr data-product-id="${item.product_id}" data-max-qty="${item.quantity}">
-                                    <td>
-                                        ${item.product_name}
-                                        <input type="hidden" name="items[${index}][product_id]" value="${item.product_id}">
-                                    </td>
+                                    <td>${item.product_name}<input type="hidden" name="items[${index}][product_id]" value="${item.product_id}"></td>
                                     <td>${item.quantity}</td>
-                                    <td>
-                                        <input type="number" name="items[${index}][quantity]"
-                                            class="form-control form-control-sm qty-input" min="0" max="${item.quantity}"
-                                            value="0" style="width: 80px;">
-                                    </td>
-                                    <td>
-                                        <input type="number" name="items[${index}][unit_price]"
-                                            class="form-control form-control-sm" value="${item.unit_price}" readonly>
-                                    </td>
-                                    <td>
-                                        <select name="items[${index}][return_reason]" class="form-select form-select-sm">
-                                            <option value="damaged">Damaged</option>
-                                            <option value="wrong_item">Wrong Item</option>
-                                            <option value="customer_changed_mind">Customer Changed Mind</option>
-                                            <option value="defective">Defective</option>
-                                            <option value="expired">Expired</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="items[${index}][condition]" class="form-select form-select-sm">
-                                            <option value="good">Good</option>
-                                            <option value="damaged">Damaged</option>
-                                            <option value="defective">Defective</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="items[${index}][notes]"
-                                            class="form-control form-control-sm" placeholder="Notes">
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-outline-danger remove-item">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </td>
+                                    <td><input type="number" name="items[${index}][quantity]" class="form-control form-control-sm qty-input" min="0" max="${item.quantity}" value="0" style="width:80px"></td>
+                                    <td><input type="number" name="items[${index}][unit_price]" class="form-control form-control-sm" value="${item.unit_price}" readonly></td>
+                                    <td><select name="items[${index}][return_reason]" class="form-select form-select-sm">
+                                        <option value="damaged">Damaged</option>
+                                        <option value="wrong_item">Wrong Item</option>
+                                        <option value="customer_changed_mind">Customer Changed Mind</option>
+                                        <option value="defective">Defective</option>
+                                        <option value="expired">Expired</option>
+                                        <option value="other">Other</option>
+                                    </select></td>
+                                    <td><select name="items[${index}][condition]" class="form-select form-select-sm">
+                                        <option value="good">Good</option>
+                                        <option value="damaged">Damaged</option>
+                                        <option value="defective">Defective</option>
+                                    </select></td>
+                                    <td><input type="text" name="items[${index}][notes]" class="form-control form-control-sm" placeholder="Notes"></td>
+                                    <td><button type="button" class="btn btn-sm btn-outline-danger remove-item"><i class="fas fa-times"></i></button></td>
                                 </tr>
                             `;
                         });
@@ -259,71 +212,20 @@
                         noItemsMessage.textContent = 'No items found for this sale';
                     }
                 })
-                .catch(error => {
-                    console.error('Error fetching sale items:', error);
-                    saleItemsTable.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error loading items: ' + error.message + '</td></tr>';
+                .catch(err => {
+                    saleItemsTable.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error loading items: ' + err.message + '</td></tr>';
                 });
         }
 
-        // Attach event listeners with delay for Select2 initialization
-        function attachSaleListener() {
-            console.log('Attaching sale listener...');
+        saleSelect.addEventListener('change', handleSaleChange);
 
-            // Standard change
-            saleSelect.addEventListener('change', function() {
-                console.log('Standard change fired');
-                handleSaleChange();
-            });
-
-            // jQuery/Select2 change
-            if (typeof jQuery !== 'undefined') {
-                jQuery(saleSelect).on('change', function() {
-                    console.log('jQuery change fired');
-                    handleSaleChange();
-                });
-
-                // Try Select2 specific event
-                jQuery(saleSelect).on('select2:select', function(e) {
-                    console.log('Select2 select fired', e.params.data);
-                    handleSaleChange();
-                });
-            }
-        }
-
-        // Initialize Select2 on sale dropdown
-        if (typeof jQuery !== 'undefined' && jQuery.fn.select2) {
-            jQuery('#saleSelect').select2({
-                placeholder: '-- Select Sale --',
-                allowClear: true,
-                width: '100%'
-            });
-        }
-
-        // Wait for page to fully load including Select2
-        if (document.readyState === 'complete') {
-            setTimeout(attachSaleListener, 500);
-        } else {
-            window.addEventListener('load', function() {
-                setTimeout(attachSaleListener, 500);
-            });
-            // Also try on DOMContentLoaded as backup
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(attachSaleListener, 1000);
-            });
-        }
-
-        // Form validation
         document.getElementById('returnForm').addEventListener('submit', function(e) {
             const items = document.querySelectorAll('#saleItemsTable tr');
             let hasValidItem = false;
-
             items.forEach(row => {
                 const qty = parseFloat(row.querySelector('.qty-input')?.value || 0);
-                if (qty > 0) {
-                    hasValidItem = true;
-                }
+                if (qty > 0) hasValidItem = true;
             });
-
             if (!hasValidItem) {
                 e.preventDefault();
                 alert('Please select at least one item to return with quantity > 0');

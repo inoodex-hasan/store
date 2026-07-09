@@ -52,7 +52,7 @@ class ReturnController extends Controller
             });
         }
 
-        $returns = $query->get();
+        $returns = $query->paginate(15);
         $customers = Customer::all();
 
         return view('frontend.pages.returns.index', compact('returns', 'customers'));

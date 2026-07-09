@@ -2,68 +2,58 @@
 
 @section('content')
     <div class="content container-fluid">
-        <div class="page-header">
-            <div class="content-page-header">
-                <h5 class="card-title fw-bold">Product Returns</h5>
-            </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="card mb-3">
-            <div class="card-body">
-                <form method="GET" action="{{ route('returns.index') }}">
-                    <div class="row g-2">
-                        <div class="col-md-3">
-                            <input type="text" name="search" class="form-control" placeholder="Search (ID, Order, Customer)"
-                                value="{{ request('search') }}">
-                        </div>
-                        <div class="col-md-2">
-                            <select name="status" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <select name="customer_id" class="form-select">
-                                <option value="">All Customers</option>
-                                @foreach($customers as $customer)
-                                    <option value="{{ $customer->id }}" {{ request('customer_id') == $customer->id ? 'selected' : '' }}>
-                                        {{ $customer->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="date" name="date_from" class="form-control" placeholder="From Date"
-                                value="{{ request('date_from') }}">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="date" name="date_to" class="form-control" placeholder="To Date"
-                                value="{{ request('date_to') }}">
-                        </div>
-                        <div class="col-md-1">
-                            <button type="submit" class="btn btn-primary w-100">Filter</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Returns Table -->
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Return List</h5>
-                <a href="{{ route('returns.create') }}" class="btn btn-primary">
-                    <i class="fa fa-plus me-2"></i>New Return
+        <div class="modern-card">
+            <div class="card-header">
+                <h5>Product Returns</h5>
+                <a href="{{ route('returns.create') }}" class="btn btn-light btn-sm text-dark float-end">
+                    <i class="fa fa-plus-circle"></i> New Return
                 </a>
             </div>
             <div class="card-body">
+                <div class="filter-bar">
+                    <form method="GET" action="{{ route('returns.index') }}">
+                        <div class="row g-2">
+                            <div class="col-md-3 p-1">
+                                <input type="text" name="search" class="form-control form-control-sm"
+                                    placeholder="Search (ID, Order, Customer)" value="{{ request('search') }}">
+                            </div>
+                            <div class="col-md-2 p-1">
+                                <select name="status" class="form-select form-select-sm">
+                                    <option value="">All Status</option>
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 p-1">
+                                <select name="customer_id" class="form-select form-select-sm">
+                                    <option value="">All Customers</option>
+                                    @foreach($customers as $customer)
+                                        <option value="{{ $customer->id }}" {{ request('customer_id') == $customer->id ? 'selected' : '' }}>
+                                            {{ $customer->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 p-1">
+                                <input type="date" name="date_from" class="form-control form-control-sm" placeholder="From Date"
+                                    value="{{ request('date_from') }}">
+                            </div>
+                            <div class="col-md-2 p-1">
+                                <input type="date" name="date_to" class="form-control form-control-sm" placeholder="To Date"
+                                    value="{{ request('date_to') }}">
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-primary btn-sm w-100">Filter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="thead-light">
+                    <table class="modern-table">
+                        <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Return Date</th>
@@ -72,7 +62,7 @@
                                 <th>Items</th>
                                 <th>Refund Amount</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,7 +72,7 @@
                                     <td>{{ $return->return_date->format('d M Y') }}</td>
                                     <td>
                                         @if($return->sale)
-                                            <a href="{{ route('sales.show', $return->sale_id) }}" class="text-decoration-none">
+                                            <a href="javascript:void(0)" class="text-decoration-none">
                                                 {{ $return->sale->order_no }}
                                             </a>
                                         @else
@@ -94,78 +84,62 @@
                                     <td>{{ number_format($return->total_refund_amount, 2) }}</td>
                                     <td>
                                         @php
-                                            $statusBadge = [
+                                            $badgeClass = [
                                                 'pending' => 'warning',
                                                 'approved' => 'info',
                                                 'completed' => 'success',
                                                 'rejected' => 'danger'
                                             ][$return->status] ?? 'secondary';
                                         @endphp
-                                        <span class="badge bg-{{ $statusBadge }}">
-                                            {{ ucfirst($return->status) }}
-                                        </span>
+                                        <span class="badge-status {{ $badgeClass }}">{{ ucfirst($return->status) }}</span>
                                     </td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                                data-bs-toggle="dropdown">
-                                                Actions
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ route('returns.show', $return->id) }}">
-                                                        <i class="far fa-eye me-2"></i>View
-                                                    </a>
-                                                </li>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="btn-action-icon" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="{{ route('returns.show', $return->id) }}">
+                                                    <i class="far fa-eye"></i> View
+                                                </a>
                                                 @if($return->isPending())
-                                                    <li>
-                                                        <form method="POST" action="{{ route('returns.approve', $return->id) }}"
-                                                            class="d-inline" onsubmit="return confirm('Approve this return?')">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <button type="submit" class="dropdown-item text-success">
-                                                                <i class="far fa-check-circle me-2"></i>Approve
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#rejectModal{{ $return->id }}">
-                                                            <i class="far fa-times-circle me-2"></i>Reject
-                                                        </a>
-                                                    </li>
+                                                    <form method="POST" action="{{ route('returns.approve', $return->id) }}"
+                                                        class="d-inline" onsubmit="return confirm('Approve this return?')">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" class="dropdown-item text-success w-100">
+                                                            <i class="far fa-check-circle"></i> Approve
+                                                        </button>
+                                                    </form>
+                                                    <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#rejectModal{{ $return->id }}">
+                                                        <i class="far fa-times-circle"></i> Reject
+                                                    </a>
                                                 @endif
                                                 @if($return->isApproved())
-                                                    <li>
-                                                        <form method="POST" action="{{ route('returns.complete', $return->id) }}"
-                                                            class="d-inline" onsubmit="return confirm('Complete return and update stock?')">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <button type="submit" class="dropdown-item text-primary">
-                                                                <i class="fas fa-box me-2"></i>Complete & Update
-                                                            </button>
-                                                        </form>
-                                                    </li>
+                                                    <form method="POST" action="{{ route('returns.complete', $return->id) }}"
+                                                        class="d-inline" onsubmit="return confirm('Complete return and update stock?')">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" class="dropdown-item text-primary w-100">
+                                                            <i class="fas fa-box"></i> Complete & Update
+                                                        </button>
+                                                    </form>
                                                 @endif
                                                 @if($return->isPending() || $return->isRejected())
-                                                    <li>
-                                                        <hr class="dropdown-divider">
-                                                    </li>
-                                                    <li>
-                                                        <form method="POST" action="{{ route('returns.destroy', $return->id) }}"
-                                                            class="d-inline" onsubmit="return confirm('Delete this return?')">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item text-danger">
-                                                                <i class="far fa-trash-alt me-2"></i>Delete
-                                                            </button>
-                                                        </form>
-                                                    </li>
+                                                    <div class="dropdown-divider"></div>
+                                                    <form method="POST" action="{{ route('returns.destroy', $return->id) }}"
+                                                        class="d-inline" onsubmit="return confirm('Delete this return?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="dropdown-item text-danger w-100">
+                                                            <i class="far fa-trash-alt"></i> Delete
+                                                        </button>
+                                                    </form>
                                                 @endif
-                                            </ul>
+                                            </div>
                                         </div>
 
-                                        <!-- Reject Modal -->
                                         @if($return->isPending())
                                             <div class="modal fade" id="rejectModal{{ $return->id }}" tabindex="-1">
                                                 <div class="modal-dialog">
@@ -173,9 +147,9 @@
                                                         <form method="POST" action="{{ route('returns.reject', $return->id) }}">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Reject Return #{{ $return->id }}</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            <div class="modal-header" style="background: #e94134; color: #fff;">
+                                                                <h5 class="modal-title" style="color: #fff;">Reject Return #{{ $return->id }}</h5>
+                                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="mb-3">
@@ -197,12 +171,18 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center py-4">No returns found</td>
+                                    <td colspan="8" class="text-center">No returns found</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+
+                @if ($returns->hasPages())
+                    <div class="modern-pagination">
+                        {{ $returns->withQueryString()->links('pagination::bootstrap-5') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
