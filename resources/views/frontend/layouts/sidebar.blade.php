@@ -475,3 +475,28 @@
         font-family: 'Kalpurush', 'SolaimanLipi', 'Arial', sans-serif;
     }
 </style>
+
+<style>
+.sidebar-inner {
+    overflow-y: auto !important;
+}
+.slimScrollBar, .slimScrollRail {
+    display: none !important;
+}
+</style>
+<script>
+(function() {
+    var check = setInterval(function() {
+        if (typeof jQuery === 'undefined' || !$.fn.slimScroll) return;
+        var $s = $('.slimscroll');
+        if (!$s.length || !$s.parent().hasClass('slimScrollDiv')) return;
+        clearInterval(check);
+        $s.css('overflow-y', 'auto');
+        $s.parent().css('overflow', 'visible');
+        var $active = $('#sidebar-menu a.active');
+        if ($active.length) {
+            $active[0].scrollIntoView({ block: 'center', behavior: 'auto' });
+        }
+    }, 100);
+})();
+</script>

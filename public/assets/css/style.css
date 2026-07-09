@@ -3059,12 +3059,12 @@ div.dataTables_wrapper div.dataTables_filter label i {
 }
 
 .sidebar .sidebar-menu ul.sidebar-vertical li a:hover {
-  background: #8fbc8f;
+  background: #fdecea;
 }
 
 .sidebar .sidebar-menu ul.sidebar-vertical .menu-title {
   color:#000;
-  background: rgba(143, 188, 143, 0.5);
+  background: rgba(233, 65, 52, 0.06);
   padding-top:10px;
   padding-bottom:10px;
 
@@ -3343,7 +3343,7 @@ span.select2-container.select2-container--default.select2-container--open {
   height: 0 !important;
 }
 .sidebar .sidebar-menu ul li.active a {
-  color: #fe3727;
+  color: #e94134;
   position: relative;
 }
 .sidebar .sidebar-menu ul li.active a::before {
@@ -3388,7 +3388,7 @@ span.select2-container.select2-container--default.select2-container--open {
   position: relative; 
   color: #3F4254;
   margin-bottom: 4px;
-  background: #f0f5f1;
+  background: #fcfafa;
 }
 @media (max-width: 1199.98px) {
   .sidebar .sidebar-menu ul li a {
@@ -3418,21 +3418,21 @@ span.select2-container.select2-container--default.select2-container--open {
   filter: brightness(0) invert(1);
 }
 .sidebar .sidebar-menu ul li a:hover span {
-  color: #000;
+  color: #e94134;
 }
 .sidebar .sidebar-menu ul li a:hover svg {
-  color: #fe3727;
+  color: #e94134;
 }
 .sidebar .sidebar-menu ul li a:hover i {
-  color: #000;
+  color: #e94134;
 }
 .sidebar .sidebar-menu ul li a:hover .badge {
   color: #fff;
 }
 .sidebar .sidebar-menu ul li a.active {
-  color: #000;
+  color: #fff;
   border-radius: 0px;
-  background-color: #8fbc8f;
+  background-color: #e94134;
 }
 .sidebar .sidebar-menu ul li a.active svg {
   color: #fe3727;
@@ -3441,7 +3441,7 @@ span.select2-container.select2-container--default.select2-container--open {
   filter: brightness(0) invert(1);
 }
 .sidebar .sidebar-menu ul li a.active span {
-  color: #000;
+  color: #fff;
 }
 .sidebar .sidebar-menu ul li a.active::before {
   width: 5px;
@@ -3450,7 +3450,7 @@ span.select2-container.select2-container--default.select2-container--open {
   position: absolute;
   left: 0;
   top: 0;
-  background: #8fbc8f;
+  background: #c62828;
   -webkit-transition: all 0.5s;
   -ms-transition: all 0.5s;
   transition: all 0.5s;
@@ -3464,7 +3464,7 @@ span.select2-container.select2-container--default.select2-container--open {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: #8fbc8f;
+  background: #c62828;
   -webkit-transition: all 0.5s;
   -ms-transition: all 0.5s;
   transition: all 0.5s;

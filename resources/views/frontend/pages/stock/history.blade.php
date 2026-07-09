@@ -76,7 +76,7 @@
                                 <th>Brand</th>
                                 <th>Previous</th>
                                 <th>Change</th>
-                                <th>New</th>
+                                <th>Current</th>
                             </tr>
                         </thead>
                         <tbody>
