@@ -167,13 +167,13 @@ Route::middleware(['auth'])->group(function () {
 
 
         // Start Shop
-        Route::get('/Shop-warehouse', [ShopWarehouseController::class, 'index'])->name('Shop-warehouse.index'); // shop and warehouse
-        Route::get('/Shop-create', [ShopWarehouseController::class, 'create_shop_button'])->name('Shop.create');
+        Route::get('/shop-warehouse', [ShopWarehouseController::class, 'index'])->name('Shop-warehouse.index'); // shop and warehouse
+        Route::get('/shop-create', [ShopWarehouseController::class, 'create_shop_button'])->name('Shop.create');
 
-        Route::post('/Shop-new', [ShopWarehouseController::class, 'store_shop'])->name('Shop.new');
-        Route::get('/Shop-edit/{id}', [ShopWarehouseController::class, 'shop_edit'])->name('Shop.edit');
-        Route::post('/Shop-update/{id}', [ShopWarehouseController::class, 'shop_update'])->name('Shop.update');
-        Route::delete('/Shop-delete/{id}', [ShopWarehouseController::class, 'shop_delete'])->name('Shop.delete');
+        Route::post('/shop-new', [ShopWarehouseController::class, 'store_shop'])->name('Shop.new');
+        Route::get('/shop-edit/{id}', [ShopWarehouseController::class, 'shop_edit'])->name('Shop.edit');
+        Route::post('/shop-update/{id}', [ShopWarehouseController::class, 'shop_update'])->name('Shop.update');
+        Route::delete('/shop-delete/{id}', [ShopWarehouseController::class, 'shop_delete'])->name('Shop.delete');
         // End Shop
 
 
