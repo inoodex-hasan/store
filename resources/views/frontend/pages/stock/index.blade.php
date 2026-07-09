@@ -1,5 +1,9 @@
 @extends('frontend.layouts.app')
 @section('content')
+    <style>
+        #product_id ~ .select2-container .select2-selection__arrow,
+        #brand_id ~ .select2-container .select2-selection__arrow { display: none; }
+    </style>
     @php
         $shopLocations = $shops->pluck('location')->unique()->values();
         $warehouseLocations = $warehouses->pluck('location')->unique()->values();
@@ -17,7 +21,7 @@
                 <div class="filter-bar">
                     <form action="{{ route('stock.index') }}" method="GET" class="row g-2">
                         <div class="col-md-3 p-1">
-                            <select name="product_id" class="form-select form-select-sm">
+                            <select name="product_id" id="product_id" class="form-select form-select-sm">
                                 <option value="">All Products</option>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}"
@@ -28,7 +32,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 p-1">
-                            <select name="brand_id" class="form-select form-select-sm">
+                            <select name="brand_id" id="brand_id" class="form-select form-select-sm">
                                 <option value="">All Brands</option>
                                 @foreach ($brands as $brand)
                                     <option value="{{ $brand->id }}"
@@ -114,7 +118,7 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Select Product <span class="text-danger">*</span></label>
-                            <select name="product_id" id="product_id" class="form-select" required>
+                            <select name="product_id" id="add_product_id" class="form-select" required>
                                 <option value="" disabled selected>-- Select Product --</option>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -194,6 +198,8 @@
 @endsection
 
 @push('scripts')
+    <link href="{{ asset('assets') }}/plugins/select2/css/select2.min.css" rel="stylesheet">
+    <script src="{{ asset('assets') }}/plugins/select2/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const shopLocations = @json($shopLocations);
@@ -257,19 +263,23 @@
             });
         }
 
-        $(document).ready(function() {
-            $('#product_id').select2({
-                dropdownParent: $('#add-stock-modal'),
-                placeholder: '-- Select Product --',
-                allowClear: true,
-                width: '100%'
-            });
-            $('#edit-product-id').select2({
-                dropdownParent: $('#edit-stock-modal'),
-                placeholder: '-- Select Product --',
-                allowClear: true,
-                width: '100%'
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof jQuery !== 'undefined' && jQuery.fn.select2) {
+                jQuery('#product_id').select2({ placeholder: 'All Products', allowClear: false, width: '100%' });
+                jQuery('#brand_id').select2({ placeholder: 'All Brands', allowClear: false, width: '100%' });
+                jQuery('#add_product_id').select2({
+                    dropdownParent: jQuery('#add-stock-modal'),
+                    placeholder: '-- Select Product --',
+                    allowClear: true,
+                    width: '100%'
+                });
+                jQuery('#edit-product-id').select2({
+                    dropdownParent: jQuery('#edit-stock-modal'),
+                    placeholder: '-- Select Product --',
+                    allowClear: true,
+                    width: '100%'
+                });
+            }
         });
     </script>
 @endpush

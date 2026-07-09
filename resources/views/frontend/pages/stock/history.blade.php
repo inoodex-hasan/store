@@ -118,14 +118,18 @@
 @endsection
 
 @push('scripts')
+    <link href="{{ asset('assets') }}/plugins/select2/css/select2.min.css" rel="stylesheet">
+    <script src="{{ asset('assets') }}/plugins/select2/js/select2.min.js"></script>
     <style>
         #product_id ~ .select2-container .select2-selection__arrow,
         #brand_id ~ .select2-container .select2-selection__arrow { display: none; }
     </style>
     <script>
-        $(document).ready(function() {
-            $('#product_id').select2({ placeholder: 'All Products', allowClear: false, width: '100%' });
-            $('#brand_id').select2({ placeholder: 'All Brands', allowClear: false, width: '100%' });
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof jQuery !== 'undefined' && jQuery.fn.select2) {
+                jQuery('#product_id').select2({ placeholder: 'All Products', allowClear: false, width: '100%' });
+                jQuery('#brand_id').select2({ placeholder: 'All Brands', allowClear: false, width: '100%' });
+            }
         });
     </script>
 @endpush
